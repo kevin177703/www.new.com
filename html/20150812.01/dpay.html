@@ -1,0 +1,615 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>在线支付-博亚娱乐城官网-缔造最完美的线上真人视讯娱乐平台！</title>
+<meta name="keywords" content="博亚娱乐、博亚娱乐场、博亚娱乐中心、菲律宾博亚娱乐、博亚游戏、澳门博亚在线、博亚线上娱乐" />
+<meta name="description" content="博亚娱乐-博亚娱乐场-博亚娱乐中心官方网,是全球所有网上玩家的娱乐选择,坚持“公平公正公开”,以诚待客,信誉第一原则；博亚真人在线娱乐平台,是您最佳的选择" />
+<META NAME="AUTHOR" CONTENT="博亚娱乐城" />
+<META NAME="COPYRIGHT" CONTENT="博亚娱乐城" />
+<link rel="shortcut icon" href="images/favicon.ico"/>
+<link rel="bookmark" href="images/favicon.ico"/>
+<link href="style/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="http://img1.gbstatic.com/js/artDialog/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="js/JQuery.BlockUI.min.2.39.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/member.js"></script>
+
+
+<style type="text/css">
+
+.cloud-helper-button a {
+	background: url(images/member/kefu.png) 0 0 no-repeat;
+	cursor: pointer;
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+/*
+.cloud-helper-button.cloud-helper-showonce a{background-position:0 -96px;}
+.cloud-helper-button a:hover{background-position:0 -48px; }
+*/
+
+.go-top {
+	background: url(images/member/goBack.png) 0 0 no-repeat;
+	width: 59px;
+	height: 59px;
+	position: fixed;
+	right: 0.1%;
+	top: 325px;
+	display: none;
+	cursor: pointer;
+}
+
+
+.go-top:hover {
+  background-position: 0 bottom;
+}
+
+</style>
+
+<script type="text/javascript">
+
+$(function(){
+
+	getmoney(1);
+
+	//左侧菜单隐藏展开
+	$('.vtitle').click(function(){
+		var _self = $(this);
+		var j = $('.vtitle').index(_self);
+		switchM(j);
+	});
+	
+	
+
+	$.getJSON("/notice.php?jsoncallback=?",function(A){
+
+	   if(A.code == 0){
+		
+		$("#pbnotice").empty().html(A.content)
+	   }
+	});
+
+
+if(document.body.clientHeight > window.screen.height) {
+
+	$(window).scroll(function(){
+		var scrollTop = $(window).scrollTop();
+
+		 if(scrollTop>300){
+                            $('.J_goTop').css({'display':'block'});
+                   }else{
+                            $('.J_goTop').css({'display':'none'});
+                  }
+
+	});
+
+}
+
+
+$(".J_goTop").click(function(e) {
+    e.preventDefault();
+   $("html,body").animate({scrollTop:0});
+});
+
+
+
+})
+
+var gbpid = 0;
+</script>
+
+</head>
+<body>
+<!--memberTop-->
+<!--会员中心头部开始-->
+<div class="top">
+
+	<div class="topbar">
+    	<div class="w990">
+		<!--顶部开始-->
+			<script type="text/javascript" src="js/top.js"></script>
+		
+		<!--顶部结束-->
+        </div>
+	</div>
+
+	<div class="head">
+    	<div class="w990">
+		<div class="logo">
+            		<object width="217" height="87" codebase="swflash.cab#version=7,0,19,0"  classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" onmousedown="location.href='/'" >
+   <param value="images/logo.swf"  name="movie" />
+   <param value="transparent" name="wmode"/>
+   <param value="high" name="quality"/>
+   <embed width="217" height="80"  wmode="transparent"  type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" quality="high" src="images/logo.swf" >
+   </object>
+            	</div>
+            
+            <div class="menu">
+				<!--导航开始-->
+					<script type="text/javascript" src="js/nav.js"></script>
+				
+				<!--导航结束-->
+            </div>
+        
+        </div>
+	</div>
+</div>
+<!--会员中心头部结束-->
+<!--会员中心Banner开始-->
+<div class="banner" style="background:url(images/pages/banner/8.png) center top;"></div>
+<!--会员中心Banner结束-->
+<!--memberTop End-->
+
+<div class="pagesmain">
+<!--公告开始-->
+<div class="hygonggao"> <div class="w990"><span><marquee id="pbnotice" width="100%" scrollamount="4" onmouseout="this.start()" onmouseover="this.stop()">
+温馨提示:尊贵的会员您好,工商银行将于2014年10月19日3:30至8:30对系统进行升级维护，期间工行网上银行、电话银行、手机银行、短信银行、微信银行、银企互联、柜面、自助设备等相关系统将暂停服务.为了保护您的资金安全，公司的收款银行帐号会不定期的进行更换，请您存款前务必联系在线客服获取最新实时使用银行帐号，谢谢。(未经联系在线客服直接将资金存入过期账号的，公司一律不负责。）</marquee></span></div></div>
+<!--公告结束-->
+
+	<div class="w990">
+		<div class="m">
+	
+			<!--memberLeft-->
+			<!--会员中心左-->
+<div class="mleft">
+           
+          <h2>个人中心</h2>
+            <div class="mcenter">
+        	<div class="mcenternei">
+                	<img src="images/member/touxiang.png" class="touxiang"> <div class="touxiangyou"><div class="mid">BY888888</div><div class="exit"><a href="javascript:Userlogout();">退出登陆</a></div></div>
+                    <div class="clear" style="height:10px"></div>
+                    <a href="dpay"><img src="images/member/chongzhibt.png" style=" margin-left:8px;"></a><a href="" target="_blank"><img src="images/member/gamebt.png" style=" margin-left:15px;"></a>
+                    <div class="clear" style="height:15px"></div>
+                    <div class="yue">
+                    	<div class="yueleft">
+                        	<li>真人视讯</li>
+                            <li>电子游艺</li>
+                        	<li class="last">钱包余额</li>
+                        </div>
+                        <div class="yueright">
+                        	<li id="money">获取中</li>
+                            <li id="lockmoney">获取中</li>
+                        	<li class="last" id="gbmoney">获取中</li>
+                        </div>
+                    
+                    </div>
+                
+                </div>
+		</div>      
+            
+            <div class="clear"></div>
+            <!--个人中心结束-->
+            <div class="mlist">
+            	<div class="vtitle"><em class="v v02"></em>财务中心</div>
+                    <div class="vcon" style="display: none;">
+                    <ul class="vconlist clearfix">
+                        	<li class="li1" id="m_1_1"><a href="dpay.html">在线存款</a></li>
+                            	<li class="li2" id="m_1_3"><a href="hand.html">银行转账</a></li>
+                            	<li class="li2" id="m_1_4"><a href="onlineget.html">在线取款</a></li>
+								<!--
+                            	<li class="li1" id="m_1_5"><a href="/member/transgame#u">游戏转账</a></li>
+                            	<li class="li2" id="m_1_6"><a href="/member/rebates#u">自助洗码</a></li>
+								-->
+                    </ul>
+                	</div>
+                    <div class="vtitle"><em class="v"></em>客户报表</div>
+                        <div class="vcon" style="display: none;">
+                        <ul class="vconlist clearfix">
+                            <li class="li1" id="m_2_1"><a href="TiKuanJiLu.html">提款记录</a></li>
+                            <li class="li2" id="m_2_2"><a href="CunKuanJiLu.html">存款记录</a></li>
+							<!--
+                            <li class="li1" id="m_2_3"><a href="/member/k3#u">优惠记录</a></li>
+                            <li class="li2" id="m_2_4"><a href="/member/k4#u">额度记录</a></li>
+							-->
+                        </ul>
+                    </div>
+                    <div class="vtitle"><em class="v"></em>基本资料</div>
+                        <div class="vcon" style="display: none;">
+                        <ul class="vconlist clearfix">
+                            <li class="li1" id="m_3_1"><a href="ubasic.html">基本资料</a></li>
+                            <li class="li2" id="m_3_2"><a href="ubank.html">银行资料</a></li>
+                            <li class="li1" id="m_3_3"><a href="uchpwd.html">修改密码</a></li>
+							<!--
+                            <li class="li2" id="m_3_4"><a href="/member/upaypwd#u">支付密码</a></li>
+							-->
+                        </ul>
+                    </div>
+                    <!--
+					<div class="vtitle"><em class="v"></em>推广中心</div>
+                        <div class="vcon" style="display: none;">
+                        <ul class="vconlist clearfix">
+                            <li class="li1" id="m_3_1"><a href="/member/adindex#u">推广连接</a></li>
+                            <li class="li2" id="m_3_2"><a href="/member/adindex#u">我的下线</a></li>
+                            <li class="li1" id="m_3_3"><a href="/member/adindex#u">收益查询</a></li>
+                        </ul>
+                    </div>
+					-->
+            </div>
+             
+     
+</div>
+
+
+<!--会员中心左End-->			<!--memberLeft End-->
+	
+			<!--加载控制器页面-->
+			<div class="mright">
+                        <div class="position">
+                    <span>当前位置：</span><a href="#">财务中心&nbsp;/&nbsp;在线支付</a>
+            
+                        </div>
+                        <div class="mcaiwucontent">
+                        	<div class="guangbo">在线快速充值，额度范围：100 ~ 20000元/次！建议使用IE8.0以上浏览器进行支付。</div>
+   
+<form name="PayForm" id="PayForm" action="<!--传输在线支付页面URL-->" method="post" target="_blank">
+                     
+<table width="640" border="0" cellspacing="0" cellpadding="0">
+
+  <tbody><tr>
+    <td width="20"><font color="d92022">*</font></td>
+    <td width="90">会员帐号：</td>
+    <td width="530">BY888888</td>
+    
+  </tr>
+  
+  <tr>
+    <td><font color="d92022">*</font></td>
+    <td>存款金额：</td>
+    <td><input type="text" id="nMoney" name="nMoney" value="0" style="width:150px" autocomplete="off" maxlength="5" onfocus="if (this.value == '0') {this.value='';}" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">&nbsp;&nbsp;&nbsp;&nbsp;元</td>
+    
+  </tr>
+  <tr>
+    <td><font color="d92022">*</font></td>
+    <td>选择银行：</td>
+    <td>&nbsp;</td>
+    
+  </tr>
+   <tr style="line-height:25px">
+    <td>&nbsp;</td>
+    <td colspan="3" class="yinhang">
+    <!-- bank list -->
+    					<label val="ABC" class="banklable"><img src="images/bankimg/nongye.gif"></label>
+					    <label val="ICBC" class="banklable"><img src="images/bankimg/gongshang.gif"></label>
+					    <label val="BOC" class="banklable"><img src="images/bankimg/zhongguo.gif"></label>
+					    <label val="CCB" class="banklable"><img src="images/bankimg/jianshe.gif"></label>
+					    <label val="PSBC" class="banklable"><img src="images/bankimg/youzheng.gif"></label>
+					    <label val="BCOM" class="banklable"><img src="images/bankimg/jiaotong.gif"></label>
+					    <label val="CEBB" class="banklable"><img src="images/bankimg/guangda.gif"></label>
+					    <label val="GDB" class="banklable"><img src="images/bankimg/guangfa.gif"></label>
+					    <label val="SPABANK" class="banklable"><img src="images/bankimg/pingan.gif"></label>
+					    <label val="SPDB" class="banklable"><img src="images/bankimg/shangpufa.gif"></label>
+					    <label val="CIB" class="banklable"><img src="images/bankimg/xingye.gif"></label>
+					    <label val="CMB" class="banklable"><img src="images/bankimg/zhaohang.gif"></label>   
+    
+    <!-- bank list end -->
+    </td>
+    </tr>
+    <tr style="line-height:25px">
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;
+
+<input type="hidden" id="verifycode" name="verifycode" value="boya20140101">
+<input type="hidden" id="bank_uid" name="bank_uid" value="10672">
+<input type="hidden" id="bank_account" name="bank_account" value="BY888888">
+<input type="hidden" id="bank_type" name="bank_type" value="">
+<input type="hidden" id="bank_img" name="bank_img" value="">
+<input type="hidden" id="hashcode" name="hashcode" value="cea9abbbe5881283421f14214ce283bf">
+
+</td>
+  </tr>
+  </tbody>
+
+</table>
+<div style="height:25px;"></div>
+
+<input type="submit" value="" style="background: url(images/member/mcaiwubt.png) no-repeat 0 0;width:186px; height:41px; margin-left:40px;border: none;cursor: pointer;line-height: 41px;" />
+
+</form>
+ </div>
+                       
+        
+</div>
+
+	<!-- 支付遮罩开始 -->
+	<div class="modal to-pay-tip" id="toPayTip" style="display: none;">
+			<div class="modal-header">
+				<h5>请在弹出的新窗口中完成支付...
+				（提醒：在线充值过程中浏览器可能会拦截银行跳转到支付页面，当浏览器弹出拦截提示时，请点击总是允许，下次将不再现提示！）
+				</h5>
+				<a href="javascript:Jclose();" class="Jclose" title="关闭">&nbsp;</a>
+			</div>
+			<div class="modal-body">
+				<div class="pay-tip clearfix">
+					<div class="fail">
+						<h4>如果支付失败...</h4>
+						<p>支付出错，推荐&nbsp;&nbsp;<a href="hand.html" id="alipayTrigger">银行转账 &gt;</a></p>
+						<p>其他问题，联系&nbsp;&nbsp;<a href="javascript:OnlineChat();">在线客服 &gt;</a></p>
+					</div>
+					<div class="success">
+						<h4>已支付成功</h4>
+						<p>立即查看&nbsp;&nbsp;<a href="/member/k4#u">订单详情 &gt;</a></p>
+						<br />
+						<p><a href="javascript:Jclose();">[立即返回] &gt;</a></p>
+					</div>
+				</div>
+			</div>
+	</div>
+	<!-- 支付遮罩结束 -->
+
+<style type="text/css">
+
+.modal {
+width: 572px;
+height:325px;
+background-color: #fff;
+-webkit-background-clip: padding-box;
+-moz-background-clip: padding-box;
+background-clip: padding-box;
+outline: none;
+}
+
+
+.modal-header {
+height: 58px;
+padding-top: 2px;
+margin: 0 30px;
+border-bottom: 1px solid #ddd;
+position: relative;
+}
+
+
+.modal-header h3 {
+width: 400px;
+margin: 0;
+line-height: 58px;
+font-size: 18px;
+color: #333;
+display: inline-block;
+float: left;
+}
+
+.modal-body {
+position: relative;
+max-height: 400px;
+padding: 30px;
+}
+
+.pay-tip {
+height: 200px;
+background: url("images/member/payment.png") no-repeat 70px 20px;
+}
+
+.pay-tip .fail, .pay-tip .success {
+float: right;
+width: 230px;
+padding: 15px;
+}
+
+.pay-tip .success {
+clear: right;
+}
+.pay-tip .fail, .pay-tip .success {
+float: right;
+width: 230px;
+padding: 15px;
+}
+
+.pay-tip .fail h4, .pay-tip .success h4 {
+margin: 0;
+color: #6d6d6d;
+}
+
+.pay-tip .fail p, .pay-tip .success p {
+padding-top: 10px;
+font-size: 12px;
+}
+
+.pay-tip a {
+color: #ee330a;
+}
+
+a.Jclose {
+background: url(images/tb_dialog_close.png) no-repeat;
+float: right;
+height: 13px;
+line-height: normal;
+margin-top: 10px;
+text-decoration: none;
+overflow: hidden;
+width: 14px;
+}
+
+
+a.Jclose:hover {
+background-position: 0 -15px;
+}
+
+
+</style>
+
+
+
+<script type="text/javascript">
+
+
+
+function Jclose(){
+
+	
+	$.unblockUI();
+
+}
+
+//在线支付提交
+
+function dSubmit(){
+
+	var  verifycode =  $("#verifycode").val();
+	var nMoney = parseInt($("#nMoney").val());
+	var strBank = $("#bank_type").val();
+	var strBankimg = $("#bank_img").val();
+	var isgetcode = false;
+
+	if(isEmptyVal(nMoney)) {
+		msg_box_show('充值金额必须为数字!',5,'','warning','nMoney');
+		return false;
+	}
+	
+	if(nMoney < 100 || nMoney >20000){
+			$("#nMoney").val("");
+			msg_box_show('每次只允许充值100元~20000元!',5,'','warning','nMoney');
+			return false;
+	}
+	
+	if(isEmptyVal(strBank) || isEmptyVal(strBankimg)){ 
+			msg_box_show('请选择需要在线支付的银行!',5,'','warning',''); 
+			return false;
+	}
+	 
+
+
+
+     if(verifycode == 'boya20140101') isgetcode=true;
+
+
+     if(isgetcode == false){
+	
+
+	//开始获取在线支付设置
+			
+	$.ajax({   
+			              type: "POST",   
+			              url: "/member/getdsetting",   
+			              data: "verifycode=boya20140101",   
+			              dataType:'json',
+			              contentType: "application/x-www-form-urlencoded; charset=utf-8", 
+			              async: false, 
+			              beforeSend:function(){ 
+  
+						showloading();
+						    
+			               },
+											    
+			              complete: function() {   
+			                   	// $.unblockUI();   
+			               } ,   
+			               success: function(data){ 
+											  
+							//开始处理
+							if(data.code == 1){
+
+								$("#PayForm").attr("action","http://" + data.msg.domain);
+								$("#verifycode").val('boya20140101');
+								$("#PayForm").submit();
+								
+						
+								
+							}else if(data.code == 0){
+							
+								//未登陆，退出登陆
+								
+								msg_box_show('未登陆或登陆已超时,请重新登陆!',5,'/index.html','succeed');
+
+								
+							
+							} else {
+								
+								msg_box_show(data.msg,8,'','error','');
+								
+
+							}
+			    
+			                                  
+						}   
+			       });  
+			
+			
+//获取在线支付设置结束
+	
+}else{
+
+	$.blockUI({ message: $('#toPayTip') });
+
+}							
+
+	return isgetcode;
+}
+
+
+//初始化
+$(document).ready(function(){
+
+	switchM(0,'m_1_1');
+
+	$(".banklable").each(function (id, dom) { 
+		$(dom).click(function(){
+			$(".banklable").removeClass("bl_on");
+			$(this).addClass("bl_on");
+			document.PayForm.bank_type.value = $(this).attr("val");
+			document.PayForm.bank_img.value = $(this).find("img").attr("src");
+			
+		});
+	});
+	
+
+	//提交表单
+	$("#PayForm").submit(function(){
+
+			var nMoney = parseInt($("#nMoney").val());
+			var strBank = $("#bank_type").val();
+			var strBankimg = $("#bank_img").val();
+
+			if(isEmptyVal(nMoney)) {
+				msg_box_show('充值金额必须为数字!',5,'','warning','nMoney');
+				return false;
+			}
+			
+			if(nMoney < 10 || nMoney >50000){
+					$("#nMoney").val("");
+					msg_box_show('每次只允许充值100元~20000元!',5,'','warning','nMoney');
+					return false;
+			}
+			
+			if(isEmptyVal(strBank) || isEmptyVal(strBankimg)){ 
+					msg_box_show('请选择需要在线支付的银行!',5,'','warning',''); 
+					return false;
+			}
+	 
+
+			$.blockUI({ message: $('#toPayTip') });
+
+		
+		return true;
+
+		
+	});
+
+
+	
+});
+</script> 			<!--加载控制器页面 End-->
+		
+		</div>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+<!--memberBottom-->
+<!--会员中心底部开始-->
+<div class="footer"></div>
+<!--会员中心底部结束-->
+
+<!--底部文字开始-->
+<script type="text/javascript" src="js/footer.js"></script>
+<!--底部文字结束-->
+<script type="text/javascript" src="js/bottom1.js"></script>
+</body>
+</html>

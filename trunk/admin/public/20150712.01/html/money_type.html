@@ -1,0 +1,208 @@
+{{$header}}
+<body>
+	<table id="dg" class="easyui-datagrid" title="资金类型" style="width:100%;height:auto"
+			data-options="
+				rownumbers:true,singleSelect:true,pagination:true,pageSize:20,
+				queryParams: {'action':'all'},
+				iconCls: 'icon-save',
+				toolbar: '#tb',
+				url: '/ajax/money-type.html',
+				method: 'post',
+				onClickRow: onClickRow
+			">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:40">ID</th>
+				<th data-options="field:'name',width:200">资金类型</th>
+				<th data-options="field:'isbonus_wz',width:120">是否有红利反水</th>
+				<th data-options="field:'isexam_wz',width:120">是否需要审核</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="tb" style="padding:2px 0">
+		<table cellpadding="0" cellspacing="0" style="width:100%">
+			<tr>
+				<td style="padding-left:2px">
+				{{if $is_add=='Y'}}
+					<a href="javascript:void(0);" id="btn_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
+				{{/if}}
+				{{if $is_edit=='Y'}}
+					<a href="javascript:void(0);" id="btn_edit" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">编辑</a>
+				{{/if}}
+				{{if $is_del=='Y'}}
+					<a href="javascript:void(0);" id="btn_remove" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
+				{{/if}}
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg" class="easyui-dialog" title="设置资金类型" style="width:450px;height:auto;padding:10px"
+			data-options="
+				iconCls: 'icon-edit',
+				buttons: '#dlg-buttons'
+			">
+		<table cellpadding="5">
+			<tr>
+				<td>资金类型:</td>
+				<td><input id="name" class="easyui-validatebox textbox" data-options="required:true,novalidate:true"></td>
+			</tr>
+			<tr id="isbonus">
+				<td>是否有反水:</td>
+				<td>
+				<input type="hidden" id="hisbonus" value="Y" />
+				<input type="radio" id="r1" name="isbonus" value="Y" checked="checked"><span>有返水</span>
+				<input type="radio" id="r2" name="isbonus" value="N"><span>无返水</span>
+				</td>
+			</tr>
+			<tr id="isexam">
+				<td>是否需要审核:</td>
+				<td>
+				<input type="hidden" id="hisexam" value="Y" />
+				<input type="radio" id="r3" name="isexam" value="Y" checked="checked"><span>需审核</span>
+				<input type="radio" id="r4" name="isexam" value="N"><span>不需审核</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg-buttons">
+		<input type="hidden" id="id" value="0" />
+		<a href="javascript:void(0)" class="easyui-linkbutton" id="btn_save">保存</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+	</div>
+	
+<script type="text/javascript">
+$(function(){
+	$('#dlg').dialog('close');
+	$('.validatebox-text').bind('blur', function(){
+		$(this).validatebox('enableValidation').validatebox('validate');
+	});
+	$("#btn_save").click(function(){
+		var id = $("#id").val();
+		var name = $("#name").val();
+		var isbonus = $("#hisbonus").val();
+		var isexam = $("#hisexam").val();
+		
+		if(isEmptyVal(name)){
+			message('请输入资金类型','warning');
+			return false;
+		}
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/money-type.html',   
+	        data: {
+	        	action:'save',
+	        	id:id,
+	        	name:name,
+	        	isbonus:isbonus,
+	        	isexam:isexam
+	        },
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },   
+	        success: function(data){
+				if(data.result==true){	
+					message('保存成功','info');
+					$('#dlg').dialog('close');
+					$('#dg').datagrid('reload');
+				}else {
+					message(data.msg,'error');
+			    }               
+	        }   
+		});
+	});
+	$("#btn_add").click(function(){
+		$("#id").val(0);
+		$("#name").val("");
+		$("#isbonus").val("Y");
+		$("#isexam").val("Y");
+		$('input[name=isbonus]').get(0).checked = true;
+		$('input[name=isexam]').get(0).checked = true;
+		$('#dlg').dialog('open');
+	});
+	$("#btn_edit").click(function(){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/money-type.html',   
+	        data: {action:'one',id:id},
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },   
+	        success: function(data){
+				if(data.result==true){
+					var data = data.data;
+					$("#id").val(data.id);
+					$("#name").val(data.name);
+					$("#hisbonus").val(data.isbonus);
+					$("#hisexam").val(data.isexam);
+					if(data.isbonus=='Y'){
+						$('input[name=isbonus]').get(0).checked = true;
+					}else{
+						$('input[name=isbonus]').get(1).checked = true;
+					}
+					if(data.isexam=='Y'){
+						$('input[name=isexam]').get(0).checked = true;
+					}else{
+						$('input[name=isexam]').get(1).checked = true;
+					}
+					$('#dlg').dialog('open');
+				}else {
+				    message('获取数据失败','warning');
+			    }               
+	        }   
+		});
+	});
+	$("#btn_remove").click(function(){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		var name = row.name;
+		$.messager.confirm('删除确认', '是否确认删除'+name+'?', function(r){
+			if (r){
+				$.ajax({   
+			        type: 'POST', 
+			        url: '/ajax/money-type.html',   
+			        data: {action:'del',id:id},
+			        dataType:'json',
+			        beforeSend:function(){
+			        	wait_open();
+			        },		    
+			        complete: function() {   
+			        	wait_close();
+			        },  
+			        success: function(data){
+			        	if(data.result==true){
+			        		deleteRow();
+			        		message('删除成功','info');
+			        		$('#dg').datagrid('reload');
+						}else {
+						    message(data.msg,'warning');
+					    }               
+			        }   
+				});
+			}
+			return false;
+		});
+	});
+	$('#isbonus input').click(function(){
+		var v = $(this).val();
+		$("#hisbonus").val(v);
+	});
+	$('#isexam input').click(function(){
+		var v = $(this).val();
+		$("#hisexam").val(v);
+	});
+})
+</script>
+</body>
+</html>

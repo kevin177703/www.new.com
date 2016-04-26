@@ -1,0 +1,32 @@
+{{$header}}
+<div class="banner" style="background:url({{$images}}pages/banner/8.png) center top;"></div>
+<div class="pagesmain">
+{{include file="message_center.html"}}
+	<div class="w990">
+		<div class="m">
+		{{include file="member_left.html"}}
+		  <div class="mright">
+            <div class="position">
+                    <span>当前位置：</span><a href="javascript:;">会员中心&nbsp;/&nbsp;会员首页</a>
+             </div>
+			<div class="mcaiwucontent">
+			<center><h1  style="color: #fff;">重要公告</h1></center>
+			{{foreach from=$message_center key=k item=data}}
+				<p style="text-indent:2em; line-height:26px; font-size:14px; color:#ffffff; width:700px; margin:0 auto;">
+				{{$data.content}}
+				</p>
+				<hr/>
+				<div style="height:20px;"></div>
+			{{/foreach}}
+				<div style="height:25px;"></div>
+			 </div>                      
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">	          
+$(document).ready(function(){
+	switchM(0);
+});
+</script>
+{{$footer}}

@@ -1,0 +1,66 @@
+{{$header}}
+<script type="text/javascript" src="{{$js}}index.js"></script>
+<div class="indexmain">
+	<div class="huandeng">
+    <div class="mainbanner">
+		<div class="mainbanner_window">
+			<ul class="mainbanner_list">
+				<li><a href="javascript:void(0);"></a></li>
+				<li><a href="javascript:void(0);"></a></li>
+				<li><a href="javascript:void(0);"></a></li>
+				<li><a href="javascript:void(0);"></a></li>
+			</ul>
+			<ul id="slideContainer">
+				<li><a href="game.html"><img src="{{$images}}index/banner/xcyx-baner.png"  height="500" alt=""  /></a></li>
+				<li><a href="activity.html"><img src="{{$images}}index/banner/khfs-baner.png"  height="500" alt=""  /></a></li>
+				<li><a href="game.html"><img src="{{$images}}index/banner/xfp-baner.png" height="500" alt=""  /></a></li>
+				<li><a href="about.html"><img src="{{$images}}index/banner/sl-baner.png"  height="500" alt=""  /></a></li>
+			</ul>
+		</div>
+        {{include file="message_nav.html"}}
+	</div>
+</div>
+<div class="gundong">
+    <div class="rollBox">
+     <div class="LeftBotton" onmousedown="ISL_GoUp()" onmouseup="ISL_StopUp()" onmouseout="ISL_StopUp()"></div>
+     <div class="Cont" id="ISL_Cont">
+      <div class="ScrCont">
+       <div id="List1">
+        <!-- 图片列表 begin -->
+        <li><a href="game.html"><img src="{{$images}}index/gundong/bjl.png" width='250' height='167' border='0'></a>
+		<br><img src="{{$images}}index/gundong/z1.png"></li>
+		<li><a href="game.html"><img src="{{$images}}index/gundong/lh.png" width='250' height='167' border='0'></a>
+		<br><img src="{{$images}}index/gundong/z2.png"></li>
+		<li><a href="game.html"><img src="{{$images}}index/gundong/sb.png" width='250' height='167' border='0'></a>
+		<br><img src="{{$images}}index/gundong/z3.png"></li>
+		<li><a href="game.html"><img src="{{$images}}index/gundong/mybjl.png" width='250' height='167' border='0'></a>
+		<br><img src="{{$images}}index/gundong/z4.png"></li>
+		<li><a href="game.html"><img src="{{$images}}index/gundong/jsbjl.png" width='250' height='167' border='0'></a>
+		<br><img src="{{$images}}index/gundong/z5.png"></li>
+		<li><a href="game.html"><img src="{{$images}}index/gundong/lhbjl.png" width='250' height='167' border='0'></a>
+		<br><img src="{{$images}}index/gundong/z6.png"></li>
+		<li><a href="game.html"><img src="{{$images}}index/gundong/lp.png" width='250' height='167' border='0'></a>
+		<br><img src="{{$images}}index/gundong/z7.png"></li>
+		<li><a href="game.html"><img src="{{$images}}index/gundong/ft.png" width='250' height='167' border='0'></a>
+		<br><img src="{{$images}}index/gundong/z8.png"></li>
+        <!-- 图片列表 end -->
+       </div>
+       <div id="List2"></div>
+      </div>
+     </div>
+     <div class="RightBotton" onmousedown="ISL_GoDown()" onmouseup="ISL_StopDown()" onmouseout="ISL_StopDown()"></div>
+    </div>
+<script language="javascript" type="text/javascript" src="{{$js}}gundong.js"></script>
+</div>
+<div class="zhantai">
+	<div class="w990">
+	<img src="{{$images}}index/touzhu/xianchang.png" border="0" usemap="#Map">
+	<map name="Map" id="Map"><area shape="rect" coords="41,60,127,87" href="game.html" /></map>
+	<img src="{{$images}}index/touzhu/wangtou.png" border="0" usemap="#Map2">
+	<map name="Map2" id="Map2"><area shape="rect" coords="47,61,135,87" href="game.html" /></map>
+	<img src="{{$images}}index/touzhu/dianhua.png" border="0" usemap="#Map3">
+	<map name="Map3" id="Map3"><area shape="rect" coords="51,61,138,87" href="game.html" /></map>
+    </div>
+</div>
+</div>
+{{$footer}}

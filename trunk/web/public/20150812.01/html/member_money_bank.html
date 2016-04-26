@@ -1,0 +1,120 @@
+{{$header}}
+<div class="banner" style="background:url({{$images}}pages/banner/8.png) center top;"></div>
+<div class="pagesmain">
+{{include file="message_center.html"}}
+	<div class="w990">
+		<div class="m">
+		{{include file="member_left.html"}}
+			<div class="mright">
+            <div class="position"><span>当前位置：</span><a href="javascript:;">财务中心&nbsp;/&nbsp;银行转账</a></div>
+            <div class="guangbo">请先存款，然后再提交存款单，否则检查不到存款记录，视作无效。</div> 
+                        <div class="mshougongcontent">
+                          
+ <table width="440" border="0" cellspacing="0" cellpadding="0">
+  <tbody><tr>
+    <td width="90">收款账户：</td>
+    <td height="40">
+   
+    <select name="money_bank_id" id="money_bank_id" class="input-xlarge">
+		<option value="0" selected="selected">请选择收款银行</option>
+        {{foreach from=$data.money_bank key=k item=money_bank}}
+         <option value="{{$money_bank.id}}">{{$money_bank.name}}({{$money_bank.intro}})</option>
+         {{/foreach}}
+    </select>
+</td>
+  </tr>
+  <tr>
+    <td colspan="2">收款人：<span id="cname">请选择</span>　　收款帐号：<span id="cnum">请选择</span></td>
+    </tr>
+  <tr>
+    <td colspan="2">开户行地址：<span id="cnaddr">请选择</span></td>
+    </tr>
+</tbody></table>
+
+<table width="460" border="0" cellspacing="0" cellpadding="0" class="table2">
+  <tbody><tr>
+    <td align="right" width="110"><span class="xing">*</span> 所属银行：</td>
+    <td>
+    <select name="bankname" id="bankname" class="input-xlarge">
+         <option value="">请选择付款所属银行</option>
+         {{foreach from=$data.user_bank_type key=k item=user_bank_type}}
+         <option value="{{$user_bank_type.name}}">{{$user_bank_type.name}}</option>
+         {{/foreach}}
+    </select>
+</td>
+  </tr>
+  <tr>
+    <td align="right"><span class="xing">*</span> 卡号后4位：</td>
+    <td><input type="text" name="bankcard" id="bankcard" maxlength="4" value="" style="width:90px;">(银行卡号后4位)</td>
+  </tr>
+  <tr>
+    <td align="right"><span class="xing">*</span> 存款户名：</td>
+    <td><input type="text" name="bankowner" id="bankowner" value=""></td>
+  </tr>
+  <tr>
+    <td align="right"><span class="xing">*</span> 开户地址：</td>
+    <td><input type="text" name="bankaddress" id="bankaddress" value="" /></td>
+  </tr> 
+  <tr>
+    <td align="right"><span class="xing">*</span> 付款方式：</td>
+    <td>
+    <select name="banktype" id="banktype" class="input-xlarge">
+          <option value="" selected="selected" >请选择存款方式</option>
+          <option value="柜台转账">柜台转账</option>
+          <option value="ATM转账">ATM转账</option>
+          <option value="网银转账">网银转账</option>
+          <option value="电话转账">电话转账</option>
+          <option value="手机转账">手机转账</option>
+		  <option value="跨行网银转账">跨行网银转账</option>
+		  <option value="其他方式转账">其他方式转账</option>
+    </select>
+</td>
+  </tr>
+  <tr>
+    <td align="right"><span class="xing">*</span> 存款金额：</td>
+    <td><input type="text" name="bankmoney" id="bankmoney" value="" maxlength="10" style="width:90px;">&nbsp;&nbsp;元&nbsp;&nbsp;(范围{{$data.mindeposit}}~{{$data.maxdeposit}})</td>
+  </tr>
+  <tr>
+    <td align="right"><span class="xing"></span> 备注信息：</td>
+    <td>
+<textarea name="remarks" id="remarks" style="width:300px; height:60px;color: #5E5C5C;background:#dfddf6;  border:none;"></textarea>
+</td>
+  </tr>
+</tbody>
+</table>           
+<div style="height:25px;"></div>
+</div>
+       <a href="javascript:moneyBankSumbit();"><img src="{{$images}}member/mcaiwubt.png" style="margin-left:40px"></a>
+        <br><br>
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript">	          
+$(document).ready(function(){
+	switchM(0,"m_1_2");
+	$("#money_bank_id").change(function(){
+		var money_bank_id = $("#money_bank_id").val();
+		var money_bank = '{{$data.money_bank_json}}';
+		if(isEmptyVal(money_bank))return false;
+		if (isEmptyVal(money_bank_id) || money_bank_id<1) {
+        	$("#cname").html("请选择");
+            $("#cnum").html("请选择");
+            $("#cnaddr").html("请选择");
+            return false;
+        }
+        $("#cname").html("获取中...");
+        $("#cnum").html("获取中...");
+        $("#cnaddr").html("获取中...");
+        money_bank = eval(money_bank);
+        for(var i=0;i<money_bank.length;i++){
+        	if(money_bank[i].id==money_bank_id){
+        		$("#cname").html(money_bank[i].truname);
+        		$("#cnum").html(money_bank[i].card);
+                $("#cnaddr").html(money_bank[i].address);
+        	}
+        }
+	});
+});
+</script>
+{{$footer}}

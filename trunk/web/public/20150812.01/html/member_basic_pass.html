@@ -1,0 +1,51 @@
+{{$header}}
+<div class="banner" style="background:url({{$images}}pages/banner/8.png) center top;"></div>
+<div class="pagesmain">
+{{include file="message_center.html"}}
+	<div class="w990">
+		<div class="m">
+		{{include file="member_left.html"}}
+			<div class="mright">
+            <div class="position">
+                    <span>当前位置：</span><a href="javascript">基本资料&nbsp;/&nbsp;修改登录密码</a>
+                        </div>
+                        <div class="mjibencontenta">
+  <div class="guangbo">为了您资金的安全,<span>建议定期修改登陆密码</span>。</div>                      
+  <table width="640" border="0" cellspacing="0" cellpadding="0">
+      <tbody>
+            <tr>
+        <td width="30"><font color="d92022">*</font></td>
+        <td width="100" align="right">原密码：</td>
+        <td width="360"><input type="password" name="password" id="password" maxlength="12" value=""></td>
+        <td>6~12个字符</td>
+      </tr>
+            <tr>
+        <td><font color="d92022">*</font></td>
+        <td align="right">新密码：</td>
+        <td><input type="password" name="new_password" id="new_password" maxlength="12" value=""></td>
+        <td>6~12个字符</td>
+      </tr>
+      <tr>
+        <td><font color="d92022">*</font></td>
+        <td align="right">确认新密码：</td>
+        <td><input type="password" name="c_new_password" id="c_new_password" maxlength="12" value=""></td>
+        <td>6~12个字符</td>
+      </tr>
+       <tr style="line-height:25px">
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </tbody>
+</table>
+<div style="height:25px;"></div>
+<a href="javascript:basicPassSubmit();" style="margin-left: 140px;"><img src="{{$images}}member/mjibenbt.png"></a>
+</div>
+</div>
+<script type="text/javascript">	          
+$(document).ready(function(){
+	switchM(3,"m_4_3");
+});
+</script>
+{{$footer}}

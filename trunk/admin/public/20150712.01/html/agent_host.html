@@ -1,0 +1,292 @@
+{{$header}}
+<link rel="stylesheet" href="{{$third}}kindeditor/themes/default/default.css?a=11">
+<script src="{{$third}}kindeditor/kindeditor-min.js"></script>
+<script src="{{$third}}kindeditor/lang/zh_CN.js"></script>
+<body>
+	<table id="dg" class="easyui-datagrid" title="代理设置" style="width:100%;height:auto"
+			data-options="
+				rownumbers:true,singleSelect:true,pagination:true,pageSize:20,
+				queryParams: {'action':'all'},
+				iconCls: 'icon-save',
+				toolbar: '#tb',
+				url: '/ajax/agent-host.html',
+				method: 'post',
+				onClickRow: onClickRow
+			">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:50">ID</th>
+				<th data-options="field:'username',width:100">代理帐号</th>
+				<th data-options="field:'web_host',width:200">网站域名</th>
+				<th data-options="field:'title',width:150">网站名称</th>
+				<th data-options="field:'logo',width:450">网站logo</th>
+				<th data-options="field:'version',width:100">页面版本</th>
+				<th data-options="field:'isadmin_wz',width:60">类型</th>
+				<th data-options="field:'addtime',width:130">添加时间</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="tb" style="padding:2px 0">
+		<table cellpadding="0" cellspacing="0" style="width:100%">
+			<tr>
+				<td style="padding-left:2px">
+				{{if $is_add=='Y'}}
+					<a href="javascript:void(0);" id="btn_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
+				{{/if}}
+				{{if $is_edit=='Y'}}
+					<a href="javascript:void(0);" id="btn_edit" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">编辑</a>
+				{{/if}}
+				{{if $is_del=='Y'}}
+					<a href="javascript:void(0);" id="btn_remove" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
+				{{/if}}
+				</td>
+				<td style="text-align:right;padding-right:2px">
+					<input id="search" class="easyui-searchbox" data-options="prompt:'输入代理帐号'" style="width:250px"></input>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg" class="easyui-dialog" title="代理设置" style="width:650px;height:auto;padding:10px"
+			data-options="
+				iconCls: 'icon-edit',
+				buttons: '#dlg-buttons'
+			">
+		<table cellpadding="5">
+			<tr>
+				<td>代理帐号:</td>
+				<td>
+					<input class="easyui-combobox" id=agent_id 
+						data-options="valueField:'id',textField:'username'">
+				</td>
+			</tr>
+			<tr>
+				<td>网站域名:</td>
+				<td><input id="web_host" class="easyui-validatebox textbox" data-options="required:true,novalidate:true"><span id="pw_msg"></span></td>
+			</tr>
+			<tr>
+				<td>网站名称:</td>
+				<td><input id="title" class="easyui-validatebox textbox" data-options="required:true,novalidate:true"></td>
+			</tr>
+			<tr>
+				<td>网站logo:</td>
+				<td>
+				<input id="logo" class="easyui-validatebox textbox" data-options="novalidate:true" style="width:250px;" >
+				<a href="javascript:;" id="uploadlogo" class="easyui-linkbutton"> logo上传 </a>
+				</td>
+			</tr>
+			<tr id="isadmin">
+				<td>是否为后端:</td>
+				<td>
+				<input type="hidden" id="hisadmin" value="N" />
+				<input type="radio" id="yes" name="isadmin" value="Y" checked="checked"><span>后端</span>
+				<input type="radio" id="no" name="isadmin" value="N"><span>前端</span>
+				</td>
+			</tr>
+			<tr>
+				<td>页面版本:</td>
+				<td>
+					<input class="easyui-combobox" id="version_id" 
+						data-options="valueField:'id',textField:'version'">
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg-buttons">
+		<input type="hidden" id="id" value="0" />
+		<a href="javascript:void(0)" class="easyui-linkbutton" id="btn_save">保存</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+	</div>
+<script>
+			KindEditor.ready(function(K) {
+				var editor = K.editor({
+					uploadJson : '/ajax/upload.html?dir_name=logo',
+					allowFileManager : true
+				});
+				K('#uploadlogo').click(function() {
+					editor.loadPlugin('image', function() {
+						editor.plugin.imageDialog({
+							showRemote : false,
+							imageUrl : K('#logo').val(),
+							clickFn : function(url, title, width, height, border, align) {
+								K('#logo').val(url);
+								editor.hideDialog();
+							}
+						});
+					});
+				});
+				
+				K('#image3').click(function() {
+					editor.loadPlugin('image', function() {
+						editor.plugin.imageDialog({
+							showRemote : false,
+							imageUrl : K('#url3').val(),
+							clickFn : function(url, title, width, height, border, align) {
+								K('#url3').val(url);
+								editor.hideDialog();
+							}
+						});
+					});
+				});
+			});
+		</script>
+<script type="text/javascript">
+$(function(){
+	$('#dlg').dialog('close');
+	$('.validatebox-text').bind('blur', function(){
+		$(this).validatebox('enableValidation').validatebox('validate');
+	});
+	$("#search").searchbox({
+	    searcher: function (val, name) {
+	        $('#dg').datagrid('options').queryParams.search = val;
+	        $('#dg').datagrid('reload');
+	    },
+	    prompt: '输入代理帐号'
+	});
+	$("#btn_save").click(function(){
+		var id = $("#id").val();
+		var agent_id = $('#agent_id').combobox('getValue');
+		var web_host = $("#web_host").val();
+		var title=$("#title").val();
+		var logo=$("#logo").val();
+		var version_id = $('#version_id').combobox('getValue');
+		var isadmin = $("#hisadmin").val();
+		if(isEmptyVal(agent_id)){
+			message('输入选择代理','warning');
+			return false;
+		}
+		if(isEmptyVal(web_host)){
+			message('请输入网站域名','warning');
+			return false;
+		}
+		if(isEmptyVal(title)){
+			message('输入网站名称','warning');
+			return false;
+		}
+		if(isEmptyVal(logo)){
+			message('请选择网站logo','warning');
+			return false;
+		}
+		if(isEmptyVal(version_id)){
+			message('输入选择页面版本','warning');
+			return false;
+		}
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/agent-host.html',   
+	        data: {action:'save',id:id,agent_id:agent_id,web_host:web_host,title:title,logo:logo,version_id:version_id,isadmin:isadmin},
+	        dataType:'json',
+	        beforeSend:function(){   
+	        	wait_open();    
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },     
+	        success: function(data){
+				if(data.result==true){	
+					message('保存成功','info');
+					$('#dlg').dialog('close');
+					$('#dg').datagrid('reload');
+				}else {
+					message(data.msg,'error');
+			    }               
+	        }   
+		});
+	});
+	$("#btn_add").click(function(){
+		$("#id").val(0);
+		$('#agent_id').combobox({disabled:false});
+		$("#web_host").val("");
+		$("#title").val("");
+		$("#logo").val("");
+		$('#dlg').dialog('open');
+	});
+	$("#btn_edit").click(function(){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		var isadmin = row.isadmin;
+		loadversion(isadmin);
+		$('#agent_id').combobox({disabled:true});
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/agent-host.html',   
+	        data: {action:'one',id:id},
+	        dataType:'json',
+	        beforeSend:function(){   
+	        	wait_open();    
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        } ,   
+	        success: function(data){
+				if(data.result==true){
+					var data= data.data;
+					$("#id").val(data.id);
+					$('#agent_id').combobox('setValue',data.agent_id);
+					$('#version_id').combobox('setValue',data.version_id);
+					$("#web_host").val(data.web_host);
+					$("#title").val(data.title);
+					$("#logo").val(data.logo);
+					$("#hisadmin").val(data.isadmin);
+					if(data.isadmin=='Y'){
+						$('input[name=isadmin]').get(0).checked = true;
+					}else{
+						$('input[name=isadmin]').get(1).checked = true;
+					}
+					$('#dlg').dialog('open');
+				}else {
+				    message('获取数据失败','warning');
+			    }               
+	        }   
+		});
+	});
+	$("#btn_remove").click(function(){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		var web_host = row.web_host;
+		$.messager.confirm('删除确认', "是否确认删除域名"+web_host+"?", function(r){
+			if (r){
+				$.ajax({   
+			        type: 'POST', 
+			        url: '/ajax/agent-host.html',   
+			        data: {action:'del',id:id},
+			        dataType:'json',
+			        beforeSend:function(){   
+			        	wait_open(); 
+			        },		    
+			        complete: function() {   
+			        	wait_close();
+			        },   
+			        success: function(data){
+			        	if(data.result==true){
+			        		deleteRow();
+			        		message('删除成功','info');
+			        		$('#dg').datagrid('reload');
+						}else {
+						    message(data.msg,'warning');
+					    }               
+			        }   
+				});
+			}
+			return false;
+		});
+	});
+	$('#isadmin input').click(function(){
+		var v = $(this).val();
+		$("#hisadmin").val(v);
+		loadversion(v);
+	});
+	function loadagent(){
+		$('#agent_id').combobox('reload', '/ajax/agent-host.html?action=agent');
+	}
+	loadagent();
+	function loadversion(isadmin){
+		$('#version_id').combobox('reload', '/ajax/agent-host.html?action=version&isadmin='+isadmin);
+		$('#version_id').combobox('setValue',0);
+	}
+	loadversion('Y');
+})
+</script>
+</body>
+</html>

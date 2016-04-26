@@ -1,0 +1,191 @@
+{{$header}}
+<body>
+	<table id="dg" class="easyui-datagrid" title="信息设置列表" style="width:100%;height:auto"
+			data-options="
+				rownumbers:true,singleSelect:true,pagination:true,pageSize:50,
+				queryParams: {'action':'all'},
+				iconCls: 'icon-save',
+				toolbar: '#tb',
+				url: '/ajax/message-set.html',
+				method: 'post',
+				onClickRow: onClickRow
+			">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:50">ID</th>
+				<th data-options="field:'title',width:100">说明</th>
+				<th data-options="field:'content',width:750">内容</th>
+				<th data-options="field:'addtime_wz',width:150">添加时间</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="tb" style="padding:2px 0">
+		<table cellpadding="0" cellspacing="0" style="width:100%">
+			<tr>
+				<td style="padding-left:2px">
+				{{if $is_one=='Y'}}
+					<a href="javascript:void(0);" id="btn_sel" class="easyui-linkbutton" data-options="iconCls:'icon-redo',plain:true">查看</a>
+				{{/if}}
+				{{if $is_add=='Y'}}
+					<a href="javascript:void(0);" id="btn_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
+				{{/if}}
+				{{if $is_edit=='Y'}}
+					<a href="javascript:void(0);" id="btn_edit" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">编辑</a>
+				{{/if}}
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg" class="easyui-dialog" title="信息设置" style="width:400px;height:auto;padding:10px"
+			data-options="
+				iconCls: 'icon-edit',
+				buttons: '#dlg-buttons'
+			">
+		<table cellpadding="5">
+			<tr>
+				<td>说明:</td>
+				<td><input id="title" class="easyui-validatebox textbox" data-options="required:true,novalidate:true"></td>
+			</tr>
+			<tr>
+				<td>内容:</td>
+				<td><input class="easyui-textbox" id="content" data-options="multiline:true" style="height:120px;width:300px"></input></td>
+			</tr>
+			<tr>
+			<td></td>
+			<td>[code]验证码,[money]金额,[date]时间,[username]帐号,[password]密码,[vip]级别,[reson]原因,[url]链接,[pay]支付方式</td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg-buttons">
+		<input type="hidden" id="id" value="0" />
+		<a href="javascript:void(0)" class="easyui-linkbutton" id="btn_save">保存</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+	</div>
+	<div id="dlg-sel" class="easyui-dialog" title="信息查看" style="width:500px;height:auto;padding:10px"
+			data-options="
+				iconCls: 'icon-redo',
+				buttons: '#dlg-sel-buttons'
+			">
+		<table cellpadding="5">
+			<tr>
+				<td width="60px">说明:</td>
+				<td id="sel_title"></td>
+			</tr>
+			<tr>
+				<td>内容:</td>
+				<td id="sel_content"></td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg-sel-buttons">
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg-sel').dialog('close')">关闭</a>
+	</div>
+<script type="text/javascript">
+$(function(){
+	$('#dlg').dialog('close');
+	$('#dlg-sel').dialog('close');
+	$('.validatebox-text').bind('blur', function(){
+		$(this).validatebox('enableValidation').validatebox('validate');
+	});
+	$("#btn_sel").click(function(){
+		if (editIndex == undefined)return false;
+		$('#dlg').dialog('close')
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/message-set.html',   
+	        data: {action:'one',id:id},
+	        dataType:'json',
+	        beforeSend:function(){   
+	        	wait_open();    
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        } ,   
+	        success: function(data){
+				if(data.result==true){
+					var data= data.data;
+					$("#sel_title").html(data.title);
+					$("#sel_content").html(data.content);
+					$('#dlg-sel').dialog('open');
+				}else {
+				    message('获取数据失败','warning');
+			    }               
+	        }   
+		});
+	});
+	$("#btn_save").click(function(){
+		var content = $("#content").val();
+		var title = $("#title").val();
+		if(isEmptyVal(title)){
+			message('输入信息说明','warning');
+			return false;
+		}
+		if(isEmptyVal(content)){
+			message('输入信息内容','warning');
+			return false;
+		}
+		var id = $("#id").val();
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/message-set.html',   
+	        data: {action:'save',id:id,content:content,title:title},
+	        dataType:'json',
+	        beforeSend:function(){   
+	        	wait_open();    
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },     
+	        success: function(data){
+				if(data.result==true){	
+					message('保存成功','info');
+					$('#dlg').dialog('close');
+					$('#dg').datagrid('reload');
+				}else {
+					message(data.msg,'error');
+			    }               
+	        }   
+		});
+	});
+	$("#btn_add").click(function(){
+		$("#id").val(0);
+		$("#title").val("");
+		$("#content").textbox('setValue',"");
+		$('#dlg-sel').dialog('close')
+		$('#dlg').dialog('open');
+	});
+	$("#btn_edit").click(function(){
+		if (editIndex == undefined)return false;
+		$('#dlg-sel').dialog('close')
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/message-set.html',   
+	        data: {action:'one',id:id},
+	        dataType:'json',
+	        beforeSend:function(){   
+	        	wait_open();    
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        } ,   
+	        success: function(data){
+				if(data.result==true){
+					var data= data.data;
+					$("#id").val(data.id);
+					$("#title").val(data.title);
+					$("#content").textbox('setValue',data.content);
+					$('#dlg').dialog('open');
+				}else {
+				    message('获取数据失败','warning');
+			    }               
+	        }   
+		});
+	});
+})
+</script>
+</body>
+</html>

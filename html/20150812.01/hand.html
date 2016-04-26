@@ -1,0 +1,409 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>银行转账-博亚娱乐城官网-缔造最完美的线上真人视讯娱乐平台！</title>
+<meta name="keywords" content="博亚娱乐、博亚娱乐场、博亚娱乐中心、菲律宾博亚娱乐、博亚游戏、澳门博亚在线、博亚线上娱乐" />
+<meta name="description" content="博亚娱乐-博亚娱乐场-博亚娱乐中心官方网,是全球所有网上玩家的娱乐选择,坚持“公平公正公开”,以诚待客,信誉第一原则；博亚真人在线娱乐平台,是您最佳的选择" />
+<META NAME="AUTHOR" CONTENT="博亚娱乐城" />
+<META NAME="COPYRIGHT" CONTENT="博亚娱乐城" />
+<link rel="shortcut icon" href="images/favicon.ico"/>
+<link rel="bookmark" href="images/favicon.ico"/>
+<link href="style/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="http://img1.gbstatic.com/js/artDialog/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="js/JQuery.BlockUI.min.2.39.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/member.js"></script>
+<script type="text/javascript" src="js/DatePicker/WdatePicker.js"></script>
+
+<script type="text/javascript">
+
+$(function(){
+
+	getmoney(1);
+
+	//左侧菜单隐藏展开
+	$('.vtitle').click(function(){
+		var _self = $(this);
+		var j = $('.vtitle').index(_self);
+		switchM(j);
+	});
+	
+	
+
+	$.getJSON("/notice.php?jsoncallback=?",function(A){
+
+	   if(A.code == 0){
+		
+		$("#pbnotice").empty().html(A.content)
+	   }
+	});
+
+
+if(document.body.clientHeight > window.screen.height) {
+
+	$(window).scroll(function(){
+		var scrollTop = $(window).scrollTop();
+
+		 if(scrollTop>300){
+                            $('.J_goTop').css({'display':'block'});
+                   }else{
+                            $('.J_goTop').css({'display':'none'});
+                  }
+
+	});
+
+}
+
+
+$(".J_goTop").click(function(e) {
+    e.preventDefault();
+   $("html,body").animate({scrollTop:0});
+});
+
+
+
+})
+
+var gbpid = 0;
+</script>
+
+</head>
+<body>
+<!--memberTop-->
+<!--会员中心头部开始-->
+<div class="top">
+
+	<div class="topbar">
+    	<div class="w990">
+		<!--顶部开始-->
+			<script type="text/javascript" src="js/top.js"></script>
+		
+		<!--顶部结束-->
+        </div>
+	</div>
+
+	<div class="head">
+    	<div class="w990">
+		<div class="logo">
+            		<object width="217" height="87" codebase="swflash.cab#version=7,0,19,0"  classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" onmousedown="location.href='/'" >
+   <param value="images/logo.swf"  name="movie" />
+   <param value="transparent" name="wmode"/>
+   <param value="high" name="quality"/>
+   <embed width="217" height="80"  wmode="transparent"  type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" quality="high" src="images/logo.swf" >
+   </object>
+            	</div>
+            
+            <div class="menu">
+				<!--导航开始-->
+					<script type="text/javascript" src="js/nav.js"></script>
+				
+				<!--导航结束-->
+            </div>
+        
+        </div>
+	</div>
+</div>
+<!--会员中心头部结束-->
+<!--会员中心Banner开始-->
+<div class="banner" style="background:url(images/pages/banner/8.png) center top;"></div>
+<!--会员中心Banner结束-->
+<!--memberTop End-->
+
+<div class="pagesmain">
+<!--公告开始-->
+<div class="hygonggao"> <div class="w990"><span><marquee id="pbnotice" width="100%" scrollamount="4" onmouseout="this.start()" onmouseover="this.stop()">
+温馨提示:尊贵的会员您好,工商银行将于2014年10月19日3:30至8:30对系统进行升级维护，期间工行网上银行、电话银行、手机银行、短信银行、微信银行、银企互联、柜面、自助设备等相关系统将暂停服务.为了保护您的资金安全，公司的收款银行帐号会不定期的进行更换，请您存款前务必联系在线客服获取最新实时使用银行帐号，谢谢。(未经联系在线客服直接将资金存入过期账号的，公司一律不负责。）</marquee></span></div></div>
+<!--公告结束-->
+
+	<div class="w990">
+		<div class="m">
+	
+			<!--memberLeft-->
+			<!--会员中心左-->
+<div class="mleft">
+           
+          <h2>个人中心</h2>
+            <div class="mcenter">
+        	<div class="mcenternei">
+                	<img src="images/member/touxiang.png" class="touxiang"> <div class="touxiangyou"><div class="mid">BY888888</div><div class="exit"><a href="javascript:Userlogout();">退出登陆</a></div></div>
+                    <div class="clear" style="height:10px"></div>
+                    <a href="dpay"><img src="images/member/chongzhibt.png" style=" margin-left:8px;"></a><a href="" target="_blank"><img src="images/member/gamebt.png" style=" margin-left:15px;"></a>
+                    <div class="clear" style="height:15px"></div>
+                    <div class="yue">
+                    	<div class="yueleft">
+                        	<li>真人视讯</li>
+                            <li>电子游艺</li>
+                        	<li class="last">钱包余额</li>
+                        </div>
+                        <div class="yueright">
+                        	<li id="money">获取中</li>
+                            <li id="lockmoney">获取中</li>
+                        	<li class="last" id="gbmoney">获取中</li>
+                        </div>
+                    
+                    </div>
+                
+                </div>
+		</div>      
+            
+            <div class="clear"></div>
+            <!--个人中心结束-->
+            <div class="mlist">
+            	<div class="vtitle"><em class="v v02"></em>财务中心</div>
+                    <div class="vcon" style="display: none;">
+                    <ul class="vconlist clearfix">
+                        	<li class="li1" id="m_1_1"><a href="dpay.html">在线存款</a></li>
+                            	<li class="li2" id="m_1_3"><a href="hand.html">银行转账</a></li>
+                            	<li class="li2" id="m_1_4"><a href="onlineget.html">在线取款</a></li>
+								<!--
+                            	<li class="li1" id="m_1_5"><a href="/member/transgame#u">游戏转账</a></li>
+                            	<li class="li2" id="m_1_6"><a href="/member/rebates#u">自助洗码</a></li>
+								-->
+                    </ul>
+                	</div>
+                    <div class="vtitle"><em class="v"></em>客户报表</div>
+                        <div class="vcon" style="display: none;">
+                        <ul class="vconlist clearfix">
+                            <li class="li1" id="m_2_1"><a href="TiKuanJiLu.html">提款记录</a></li>
+                            <li class="li2" id="m_2_2"><a href="CunKuanJiLu.html">存款记录</a></li>
+							<!--
+                            <li class="li1" id="m_2_3"><a href="/member/k3#u">优惠记录</a></li>
+                            <li class="li2" id="m_2_4"><a href="/member/k4#u">额度记录</a></li>
+							-->
+                        </ul>
+                    </div>
+                    <div class="vtitle"><em class="v"></em>基本资料</div>
+                        <div class="vcon" style="display: none;">
+                        <ul class="vconlist clearfix">
+                            <li class="li1" id="m_3_1"><a href="ubasic.html">基本资料</a></li>
+                            <li class="li2" id="m_3_2"><a href="ubank.html">银行资料</a></li>
+                            <li class="li1" id="m_3_3"><a href="uchpwd.html">修改密码</a></li>
+							<!--
+                            <li class="li2" id="m_3_4"><a href="/member/upaypwd#u">支付密码</a></li>
+							-->
+                        </ul>
+                    </div>
+                    <!--
+					<div class="vtitle"><em class="v"></em>推广中心</div>
+                        <div class="vcon" style="display: none;">
+                        <ul class="vconlist clearfix">
+                            <li class="li1" id="m_3_1"><a href="/member/adindex#u">推广连接</a></li>
+                            <li class="li2" id="m_3_2"><a href="/member/adindex#u">我的下线</a></li>
+                            <li class="li1" id="m_3_3"><a href="/member/adindex#u">收益查询</a></li>
+                        </ul>
+                    </div>
+					-->
+            </div>
+             
+     
+</div>
+
+
+<!--会员中心左End-->
+
+<!--memberLeft End-->
+			<!--加载控制器页面-->
+			<div class="mright">
+            <div class="position">
+                    <span>当前位置：</span><a href="#">财务中心&nbsp;/&nbsp;银行转账</a>
+            
+                        </div>
+                        <div class="mshougongcontent">
+
+                        
+ <table width="440" border="0" cellspacing="0" cellpadding="0">
+  <tbody><tr>
+    <td width="90">收款账户：</td>
+    <td height="40">
+   
+    <select name="gbanktype" id="gbanktype">
+			<option value="" selected="selected">请选择...</option>
+            <option value="农业银行">农业银行</option>
+            <option value="工商银行">工商银行</option>
+            <option value="建设银行">建设银行</option>
+			<option value="交通银行">交通银行</option>
+    </select>
+</td>
+  </tr>
+  <tr>
+    <td colspan="2">收款人：<span id="cname">请选择</span>　　收款帐号：<span id="cnum">请选择</span></td>
+    </tr>
+  <tr>
+    <td colspan="2">开户行地址：<span id="cnaddr">请选择</span></td>
+    </tr>
+</tbody></table>
+
+<table width="460" border="0" cellspacing="0" cellpadding="0" class="table2">
+  <tbody><tr>
+    <td align="right" width="110"><span class="xing">*</span> 所属银行：</td>
+    <td>
+    <select name="bankname" id="bankname">
+                          <option value="" selected="selected">请选择付款所属银行</option>
+                          <option value="工商银行">工商银行</option>
+                          <option value="建设银行">建设银行</option>
+                          <option value="农业银行">农业银行</option>
+                          <option value="邮政储蓄银行">邮政储蓄银行</option>
+                          <option value="中国银行">中国银行</option>
+                          <option value="招商银行">招商银行</option>
+                          <option value="交通银行">交通银行</option>
+                          <option value="光大银行">光大银行</option>
+                          <option value="中信银行">中信银行</option>
+                          <option value="深圳发展银行">深圳发展银行</option>
+                          <option value="民生银行">民生银行</option>
+                          <option value="东亚银行">东亚银行</option>
+                          <option value="平安银行">平安银行</option>
+                          <option value="兴业银行">兴业银行</option>
+                          <option value="广东发展银行">广东发展银行</option>
+                          <option value="华夏银行">华夏银行</option>
+                          <option value="浦发银行">浦发银行</option>
+    </select>
+</td>
+  </tr>
+<!--  
+  <tr>
+    <td align="right"><span class="xing">*</span> 转账卡号：</td>
+    <td><input type="text" name="bankcard" id="bankcard" value=""></td>
+  </tr>
+-->
+  <tr>
+    <td align="right"><span class="xing">*</span> 存款户名：</td>
+    <td><input type="text" name="bankowner" id="bankowner" value=""></td>
+  </tr>
+  <tr>
+    <td align="right"><span class="xing">*</span> 开户地址：</td>
+    <td><input type="hidden" name="bankid" id="bankid" value="0" />
+<textarea name="aemarks" id="aemarks" style="width:350px; height:30px;color: #5E5C5C;background:#dfddf6;  border:none;">请输入付款银行的开户地址,例如:XX省XX市!</textarea>
+</td>
+  </tr>  
+  
+  <tr>
+    <td align="right"><span class="xing">*</span> 付款方式：</td>
+    <td>
+    <select name="banktype" id="banktype">
+
+                                          <option value="" selected="selected">请选择存款方式</option>
+                                          <option value="柜台转账">柜台转账</option>
+                                          <option value="ATM转账">ATM转账</option>
+                                          <option value="网银转账">网银转账</option>
+                                          <option value="电话转账">电话转账</option>
+                                          <option value="手机转账">手机转账</option>
+										  <option value="跨行网银转账">跨行网银转账</option>
+										  <option value="其他方式转账">其他方式转账</option>
+    </select>
+</td>
+  </tr>
+  <tr>
+    <td align="right"><span class="xing">*</span> 存款金额：</td>
+    <td><input type="text" name="nmoney" id="nmoney" value="" style="width:80px;">&nbsp;&nbsp;元&nbsp;&nbsp;(建议存款时添加尾数,如:100.35)</td>
+
+	
+	
+  </tr>
+
+  <tr>
+    <td align="right"><span class="xing">*</span> 存款时间：</td>
+    <td><input type="text" name="cardtime" id="cardtime" value="" onfocus="WdatePicker({startDate:'',dateFmt:'2014-MM-dd HH:mm:ss',alwaysUseStartDate:true})" style="background:url(images/member/riqi.png) no-repeat; width:150px; padding-right:27px; cursor: pointer;">&nbsp;&nbsp;&nbsp;(您转帐存款的时间)</td>
+  </tr>
+  <tr>
+    <td align="right"><span class="xing">*</span> 备注信息：</td>
+    <td>
+
+<input type="hidden" name="bankid" id="bankid" value="0" />
+
+
+<textarea name="remarks" id="remarks" style="width:300px; height:60px;color: #5E5C5C;background:#dfddf6;  border:none;">可注明您的游戏账户,开户行地址,存款时间,存款方式！</textarea>
+
+
+</td>
+  </tr>
+</tbody>
+</table>
+
+                   	
+
+<div style="height:25px;"></div>
+</div>
+       <a href="javascript:hPaySubmit();"><img src="images/member/mcaiwubt.png" style="margin-left:40px"></a>
+        <br><br><br><br><br><br>
+</div>
+
+<!-- jq select -->
+<script type="text/javascript" src="js/jquery.select.js"></script>
+       
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+
+	switchM(0,'m_1_3');
+
+
+	$("#remarks").focus(function(){
+
+		var strRemarks = $(this).val();
+		
+		if(strRemarks == '可注明您的游戏账户,开户行地址,存款时间,存款方式！'){
+
+			$(this).val("");
+			$(this).css("color","black");
+
+
+		}
+
+
+	});
+
+	
+});
+</script>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+
+	switchM(0,'m_1_3');
+
+
+	$("#aemarks").focus(function(){
+
+		var straemarks = $(this).val();
+		
+		if(straemarks == '请输入付款银行的开户地址,例如:XX省XX市!'){
+
+			$(this).val("");
+			$(this).css("color","black");
+
+
+		}
+
+
+	});
+
+	
+});
+</script>
+
+ 			<!--加载控制器页面 End-->
+
+		
+		</div>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+
+<!--memberBottom-->
+<!--会员中心底部开始-->
+<div class="footer"></div>
+<!--会员中心底部结束-->
+
+<!--底部文字开始-->
+<script type="text/javascript" src="js/footer.js"></script>
+<!--底部文字结束-->
+
+</body>
+</html>

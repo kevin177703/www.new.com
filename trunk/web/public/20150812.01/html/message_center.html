@@ -1,0 +1,8 @@
+<!--公告开始-->
+<div class="hygonggao"> <div class="w990"><span>
+<marquee id="pbnotice" width="100%" scrollamount="4" onmouseout="this.start()" onmouseover="this.stop()">
+{{foreach from=$message_center key=k item=data}}
+	{{$data.content}}&nbsp;&nbsp;&nbsp;&nbsp;
+{{/foreach}}
+</marquee></span></div></div>
+<!--公告结束-->

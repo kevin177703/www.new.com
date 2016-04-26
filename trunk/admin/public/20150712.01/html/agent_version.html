@@ -1,0 +1,176 @@
+{{$header}}
+<body>
+	<table id="dg" class="easyui-datagrid" title="页面版本" style="width:100%;height:auto"
+			data-options="
+				rownumbers:true,singleSelect:true,pagination:true,pageSize:20,
+				queryParams: {'action':'all'},
+				iconCls: 'icon-save',
+				toolbar: '#tb',
+				url: '/ajax/agent-version.html',
+				method: 'post',
+				onClickRow: onClickRow
+			">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:50">ID</th>
+				<th data-options="field:'version',width:250">版本号</th>
+				<th data-options="field:'isadmin_wz',width:150">类型</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="tb" style="padding:2px 0">
+		<table cellpadding="0" cellspacing="0" style="width:100%">
+			<tr>
+				<td style="padding-left:2px">
+				{{if $is_add=='Y'}}
+					<a href="javascript:void(0);" id="btn_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
+				{{/if}}
+				{{if $is_edit=='Y'}}
+					<a href="javascript:void(0);" id="btn_edit" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">编辑</a>
+				{{/if}}
+				{{if $is_del=='Y'}}
+					<a href="javascript:void(0);" id="btn_remove" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
+				{{/if}}
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg" class="easyui-dialog" title="页面版本设置" style="width:400px;height:auto;padding:10px"
+			data-options="
+				iconCls: 'icon-edit',
+				buttons: '#dlg-buttons'
+			">
+		<table cellpadding="5">
+			<tr>
+				<td>版本号:</td>
+				<td><input id="version" class="easyui-validatebox textbox" data-options="required:true,novalidate:true"></td>
+			</tr>
+			<tr id="isadmin">
+				<td>是否为后端:</td>
+				<td>
+				<input type="hidden" id="hisadmin" value="N" />
+				<input type="radio" id="yes" name="isadmin" value="Y" checked="checked"><span>后端</span>
+				<input type="radio" id="no" name="isadmin" value="N"><span>前端</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg-buttons">
+		<input type="hidden" id="id" value="0" />
+		<a href="javascript:void(0)" class="easyui-linkbutton" id="btn_save">保存</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+	</div>
+<script type="text/javascript">
+$(function(){
+	$('#dlg').dialog('close');
+	$('.validatebox-text').bind('blur', function(){
+		$(this).validatebox('enableValidation').validatebox('validate');
+	});
+	$("#btn_save").click(function(){
+		var version = $("#version").val();
+		if(isEmptyVal(version)){
+			message('输入版本号','warning');
+			return false;
+		}
+		var isadmin = $("#hisadmin").val();
+		var id = $("#id").val();
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/agent-version.html',   
+	        data: {action:'save',id:id,version:version,isadmin:isadmin},
+	        dataType:'json',
+	        beforeSend:function(){   
+	        	wait_open();    
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },     
+	        success: function(data){
+				if(data.result==true){	
+					message('保存成功','info');
+					$('#dlg').dialog('close');
+					$('#dg').datagrid('reload');
+				}else {
+					message(data.msg,'error');
+			    }               
+	        }   
+		});
+	});
+	$("#btn_add").click(function(){
+		$("#id").val(0);
+		$('#version').attr("");
+		$('#dlg').dialog('open');
+	});
+	$("#btn_edit").click(function(){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/agent-version.html',   
+	        data: {action:'one',id:id},
+	        dataType:'json',
+	        beforeSend:function(){   
+	        	wait_open();    
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        } ,   
+	        success: function(data){
+				if(data.result==true){
+					var data= data.data;
+					$("#id").val(data.id);
+					$("#version").val(data.version);
+					$("#hisadmin").val(data.isadmin);
+					if(data.isadmin=='Y'){
+						$('input[name=isadmin]').get(0).checked = true;
+					}else{
+						$('input[name=isadmin]').get(1).checked = true;
+					}
+					$('#dlg').dialog('open');
+				}else {
+				    message('获取数据失败','warning');
+			    }               
+	        }   
+		});
+	});
+	$("#btn_remove").click(function(){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		var version = row.version;
+		$.messager.confirm('删除确认', "删除此版本号，会使此版本的网站无法打开。是否确认删除版本号"+version+"?", function(r){
+			if (r){
+				$.ajax({   
+			        type: 'POST', 
+			        url: '/ajax/agent-version.html',   
+			        data: {action:'del',id:id},
+			        dataType:'json',
+			        beforeSend:function(){   
+			        	wait_open(); 
+			        },		    
+			        complete: function() {   
+			        	wait_close();
+			        },   
+			        success: function(data){
+			        	if(data.result==true){
+			        		deleteRow();
+			        		message('删除成功','info');
+			        		$('#dg').datagrid('reload');
+						}else {
+						    message(data.msg,'warning');
+					    }               
+			        }   
+				});
+			}
+			return false;
+		});
+	});
+	$('#isadmin input').click(function(){
+		var v = $(this).val();
+		$("#hisadmin").val(v);
+	});
+})
+</script>
+</body>
+</html>

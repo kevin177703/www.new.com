@@ -1,0 +1,46 @@
+{{$header}}
+<body>
+	<table id="dg" class="easyui-datagrid" title="网站域名" style="width:100%;height:auto"
+			data-options="
+				rownumbers:true,singleSelect:true,pagination:true,pageSize:20,
+				queryParams: {'action':'all'},
+				iconCls: 'icon-save',
+				toolbar: '#tb',
+				url: '/ajax/log-operate.html',
+				method: 'post',
+				onClickRow: onClickRow
+			">
+		<thead>
+			<tr>
+				<th data-options="field:'web_host',width:200">操作类容</th>
+				<th data-options="field:'status_wz',width:60">状态</th>
+				<th data-options="field:'addtime',width:130">添加时间</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="tb" style="padding:2px 0">
+		<table cellpadding="0" cellspacing="0" style="width:100%">
+			<tr>
+				<td style="text-align:right;padding-right:2px">
+					<input id="search" class="easyui-searchbox" data-options="prompt:'输入内容关键字'" style="width:250px"></input>
+				</td>
+			</tr>
+		</table>
+	</div>
+<script type="text/javascript">
+$(function(){
+	$('#dlg').dialog('close');
+	$('.validatebox-text').bind('blur', function(){
+		$(this).validatebox('enableValidation').validatebox('validate');
+	});
+	$("#search").searchbox({
+	    searcher: function (val, name) {
+	        $('#dg').datagrid('options').queryParams.search = val;
+	        $('#dg').datagrid('reload');
+	    },
+	    prompt: '输入内容关键字'
+	});
+})
+</script>
+</body>
+</html>

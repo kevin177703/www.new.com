@@ -1,0 +1,148 @@
+{{$header}}
+<div class="banner" style="background:url({{$images}}pages/banner/9.png) center top;"></div>
+<div class="pagesmain">
+<div class="w990">
+	<div class="position">
+    	<span>当前位置：</span><a href="javascript:;">会员注册</a>
+	</div>
+    	<div class="huiyuanzhuce">
+        	<div style="width:940px; margin:0 auto">
+        	<div class="zhanghao">
+            </div>
+ <table width="770" border="0" cellspacing="0" cellpadding="0">
+<tr>
+    <td width="20"><span class="xing">*</span></td>
+    <td width="70">帐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：</td>
+    <td width="365"><input type="text" maxlength="12" id="reg_username" value="" autocomplete="off" ajaxurl="/index/checkexit" datatype="s5-12" nullmsg="帐号不能为空！" errormsg="帐号以BY开头，至少5个字符,最多12个字符！"></td>
+    <td width="315"><span class="Validform_checktip" id="username_tip">5-12个字符，英文字母或数字的组合</span></td>
+  </tr>
+   <tr>
+    <td width="20"><span class="xing">*</span></td>
+    <td width="70">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</td>
+    <td width="365"><input type="password" id="reg_password" datatype="*6-12" nullmsg="请设置密码！" errormsg="密码范围在6~12位之间！" /></td>
+    <td width="315"><span class="Validform_checktip" id="password_tip">须为6~12码英文或数字且符合0~9或a~z字母</span></td>
+  </tr>
+  <tr>
+    <td width="20"><span class="xing">*</span></td>
+    <td width="70">确认密码：</td>
+    <td width="365"><input type="password" id="reg_cpassword" datatype="*" recheck="pwd" nullmsg="请再输入一次密码！" errormsg="您两次输入的账号密码不一致！" /></td>
+    <td width="315"><span class="Validform_checktip" id="cpassword_tip">请再次输入密码</span></td>
+  </tr>
+  <tr>
+    <td width="20"><span class="xing">*</span></td>
+    <td width="70">验&nbsp;&nbsp;证&nbsp;&nbsp;码：</td>
+    <td width="365"><input type="text" id="reg_code" value="" maxlength="4" autocomplete="off" /></td>
+    <td width="315">
+	    <a href="javascript:code();"><img src="" style="width:75; height:30; border: 0;" alt="点击获取验证码" id="img_code"/></a>
+	    <a href="javascript:code();">看不清？点击获取验证码</a>
+    </td>
+  </tr>
+</table>
+  <div class="ziliao"></div>
+  <table width="770" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="20"><span class="xing">*</span></td>
+    <td width="70">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</td>
+    <td width="365"><input type="text" maxlength="4" id="reg_name" autocomplete="off" datatype="m" nullmsg="姓名不能为空！" errormsg="请输入正确的您的姓名！" /></td>
+    <td width="315"><span class="Validform_checktip" id="name_tip">请填写您的姓名，名字须与您的银行卡号所用名字相同</span></td>
+  </tr>  
+  <tr>
+    <td width="20"><span class="xing">*</span></td>
+    <td width="70">手机号码：</td>
+    <td width="365"><input type="text" maxlength="11" id="reg_phone" autocomplete="off" datatype="m" nullmsg="手机号码不能为空！" errormsg="请输入正确的手机号码！" /></td>
+    <td width="315"><span class="Validform_checktip" id="phone_tip">手机号码是您取回密码的凭证,请认真填写</span></td>
+  </tr>
+  <tr>
+    <td width="20"><span class="xing">*</span></td>
+    <td width="70">取款密码：</td>
+    <td width="365"><input type="text" maxlength="4" id="reg_transpassword" autocomplete="off" datatype="m" nullmsg="四位数取款密码不能为空！" errormsg="请输入正确的取款密码！" /></td>
+    <td width="315"><span class="Validform_checktip" id="transpassword_tip">请填写一个四位数取款密码，这将是您提款的凭证,请认真填写并牢记</span></td>
+  </tr>
+  <tr>
+    <td width="20"></td>
+    <td width="70">QQ号码：</td>
+    <td width="365"><input type="text" id="reg_qq" autocomplete="off" datatype="n4-16" ignore="ignore" errormsg="请输入正确的qq号码！" /></td>
+    <td width="315"><span class="Validform_checktip" id="qq_tip">没有QQ号码请留空该项</span></td>
+  </tr>
+</table>
+    <a href="javascript:reg();"><img src="{{$images}}zhucebt.png" style="margin-left:170px;" alt="提交注册" /></a>
+            <br><br><br>
+    </div>
+    	</div>
+    <div style="height:20px;"></div>
+</div>
+</div>
+{{$footer}}
+<script type="text/javascript">
+function code(){
+	$.ajax({   
+        type: 'POST', 
+        url: '/ajax/code.html?action=reg&x=75&y=30',   
+        data: {},
+        dataType:'text',    
+        success: function(data){
+        	$("#img_code").attr("src",data); 
+        }   
+	});
+}
+function reg(){
+	var username = $("#reg_username").val();
+	var password = $("#reg_password").val();
+	var cpassword = $("#reg_cpassword").val();
+	var code = $("#reg_code").val();
+	var name = $("#reg_name").val();
+	var phone = $("#reg_phone").val();
+	var transpassword = $("#reg_transpassword").val();
+	var qq = $("#reg_qq").val();
+	if(isEmptyVal(username)){
+		msg_box_show("帐号不能为空",3,'','error');
+	}
+	if(isEmptyVal(password)){
+		msg_box_show("密码不能为空",3,'','error');
+	}
+	if(password != cpassword){
+		msg_box_show("两次密码不一致",3,'','error');
+	}
+	if(isEmptyVal(code)){
+		msg_box_show("验证码不能为空",3,'','error');
+	}
+	if(isEmptyVal(name)){
+		msg_box_show("姓名不能为空",3,'','error');
+	}
+	if(isEmptyVal(phone)){
+		msg_box_show("手机号码不能为空",3,'','error');
+	}
+	if(isEmptyVal(transpassword)){
+		msg_box_show("取款密码不能为空",3,'','error');
+	}
+	$.ajax({   
+        type: 'POST', 
+        url: '/ajax/user-reg.html',   
+        data: {
+        	username:username,
+        	password:password,
+        	cpassword:cpassword,
+        	code:code,
+        	name:name,
+        	phone:phone,
+        	transpassword:transpassword,
+        	qq:qq
+        	},
+        dataType:'json',
+        beforeSend:function(){   
+        	showloading();   
+        },		    
+        complete: function() {   
+        	$.unblockUI();
+        },     
+        success: function(data){
+			if(data.result==true){	
+				msg_box_show("注册成功",3,"/",'succeed');
+			}else {
+				msg_box_show(data.msg,3,'','error');
+		    }               
+        }   
+	});
+}
+code();
+</script>

@@ -1,0 +1,282 @@
+{{$header}}
+<body>
+	<table id="dg" class="easyui-datagrid" title="代理管理" style="width:100%;height:auto"
+			data-options="
+				rownumbers:true,singleSelect:true,pagination:true,pageSize:20,
+				queryParams: {'action':'all'},
+				iconCls: 'icon-save',
+				toolbar: '#tb',
+				url: '/ajax/agent-list.html',
+				method: 'post',
+				onClickRow: onClickRow
+			">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:50">ID</th>
+				<th data-options="field:'username',width:200">代理帐号</th>
+				<th data-options="field:'code',width:100">代理编码</th>
+				<th data-options="field:'game_type_wz',width:350">开启游戏</th>
+				<th data-options="field:'phone',width:150">联系电话</th>
+				<th data-options="field:'email',width:200">电子邮件</th>
+				<th data-options="field:'addtime',width:150">添加时间</th>
+				<th data-options="field:'status_wz',width:100">状态</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="tb" style="padding:2px 0">
+		<table cellpadding="0" cellspacing="0" style="width:100%">
+			<tr>
+				<td style="padding-left:2px">
+				{{if $is_add=='Y'}}
+					<a href="javascript:void(0);" id="btn_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
+				{{/if}}
+				{{if $is_edit=='Y'}}
+					<a href="javascript:void(0);" id="btn_edit" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">编辑</a>
+				{{/if}}
+				{{if $is_del=='Y'}}
+					<a href="javascript:void(0);" id="btn_remove" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
+				{{/if}}
+				</td>
+				<td style="text-align:right;padding-right:2px">
+					<input id="search" class="easyui-searchbox" data-options="prompt:'输入代理帐号'" style="width:250px"></input>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg" class="easyui-dialog" title="设置代理" style="width:450px;height:auto;padding:10px"
+			data-options="
+				iconCls: 'icon-edit',
+				buttons: '#dlg-buttons'
+			">
+		<table cellpadding="5">
+			<tr>
+				<td width="60px">代理帐号:</td>
+				<td><input id="username" class="easyui-validatebox textbox" data-options="required:true,novalidate:true"></td>
+			</tr>
+			<tr>
+				<td>代理编码:</td>
+				<td><input id="code" class="easyui-validatebox textbox" style="width:80px" data-options="required:true,novalidate:true">(固定3位字母或数字，以字母开头,全小写)</td>
+			</tr>
+			<tr>
+				<td>代理密码:</td>
+				<td><input type="password" id="password" class="easyui-validatebox textbox" data-options="required:true,novalidate:true"><span id="pw_msg"></span></td>
+			</tr>
+			<tr>
+				<td>密码确认:</td>
+				<td><input type="password" id="cppassword" class="easyui-validatebox textbox" data-options="required:true,novalidate:true"></td>
+			</tr>
+			<tr>
+				<td>联系电话:</td>
+				<td><input id="phone" class="easyui-validatebox textbox" data-options="novalidate:true"></td>
+			</tr>
+			<tr>
+				<td>电子邮件:</td>
+				<td><input id="email" class="easyui-validatebox textbox" data-options="novalidate:true"></td>
+			</tr>
+			<tr>
+				<td>开启游戏:</td>
+				<td>
+				{{foreach from=$game_type key=k item=i}}
+				<input type="checkbox" id="game_type{{$k}}" name="game_type" checked="checked" value="{{$k}}">{{$i}} &nbsp;
+				{{/foreach}}
+				</td>
+			</tr>
+			<tr id="status">
+				<td>状态:</td>
+				<td>
+				<input type="hidden" id="hstatus" value="Y" />
+				<input type="radio" id="yes" name="status" value="Y" checked="checked"><span>启用</span>
+				<input type="radio" id="no" name="status" value="N"><span>禁用</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg-buttons">
+		<input type="hidden" id="id" value="0" />
+		<a href="javascript:void(0)" class="easyui-linkbutton" id="btn_save">保存</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+	</div>
+<script type="text/javascript">
+$(function(){
+	$('#dlg').dialog('close');
+	$('.validatebox-text').bind('blur', function(){
+		$(this).validatebox('enableValidation').validatebox('validate');
+	});
+	$("#search").searchbox({
+	    searcher: function (val, name) {
+	        $('#dg').datagrid('options').queryParams.search = val;
+	        $('#dg').datagrid('reload');
+	    },
+	    prompt: '输入代理帐号'
+	});
+	$('#parent_id').combobox({    
+	    onChange : function(n,o){
+	    	$("#hparent_id").val(n);
+		}  
+	});
+	$("#btn_save").click(function(){
+		var username = $("#username").val();
+		var code = $("#code").val();
+		if(isEmptyVal(username)){
+			message('输入代理帐号','warning');
+			return false;
+		}
+		if(isEmptyVal(code)){
+			message('输入代理编号','warning');
+			return false;
+		}
+		var game_type="";     
+	    $("[name='game_type']").each(function(){    
+	    	if(this.checked){
+	    		game_type +=$(this).val()+",";    
+	    	}
+	    })     
+		var id = $("#id").val();
+		var password = $("#password").val();
+		var cppassword = $("#cppassword").val();
+		var phone = $("#phone").val();
+		var email = $("#email").val();
+		var status = $("#hstatus").val();
+		if(password != cppassword){
+			message('两次密码不一致','warning');
+			return false;
+		}
+		if(id<1){
+			if(isEmptyVal(password)){
+				message('输入代理帐号密码','warning');
+				return false;
+			}
+		}
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/agent-list.html',   
+	        data: {
+	        	action:'save',
+	        	id:id,
+				username:username,
+				code:code,
+				game_type:game_type,
+				password:password,
+				cppassword:cppassword,
+				phone:phone,
+				email:email,
+				status:status
+	        },
+	        dataType:'json',
+	        beforeSend:function(){   
+	        	wait_open();    
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },     
+	        success: function(data){
+				if(data.result==true){	
+					message('保存成功','info');
+					$('#dlg').dialog('close');
+					$('#dg').datagrid('reload');
+				}else {
+					message(data.msg,'error');
+			    }               
+	        }   
+		});
+	});
+	$("#btn_add").click(function(){
+		$("#id").val(0);
+		$('#username').attr('disabled',false);
+		$('#code').attr('disabled',false);
+		$("[name='game_type']").removeAttr("checked");
+		$("#pw_msg").html("");
+		$("#username").val("");
+		$("#code").val("");
+		$("#password").val("");
+		$("#cppassword").val("");
+		$("#phone").val("");
+		$("#email").val("");
+		$('#dlg').dialog('open');
+	});
+	$("#btn_edit").click(function(){
+		if (editIndex == undefined)return false;
+		$("[name='game_type']").removeAttr("checked");
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/agent-list.html',   
+	        data: {action:'one',id:id},
+	        dataType:'json',
+	        beforeSend:function(){   
+	        	wait_open();    
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        } ,   
+	        success: function(data){
+				if(data.result==true){
+					var data= data.data;
+					$("#pw_msg").html("若不修改，请留空");
+					$("#id").val(data.id);
+					$("#hstatus").val(data.status);
+					$("#username").val(data.username);
+					$('#username').attr('disabled',true);
+					$("#code").val(data.code);
+					$("#code").attr('disabled',true);
+					$("#password").val("");
+					$("#cppassword").val("");
+					$("#phone").val(data.phone);
+					$("#email").val(data.email);
+					var game_type = data.game_type_d;
+					for(var i=0;i<game_type.length;i++){
+						$("#game_type"+game_type[i]).prop("checked",true);
+					}
+					if(data.status=='Y'){
+						$('input[name=status]').get(0).checked = true;
+					}else{
+						$('input[name=status]').get(1).checked = true;
+					}
+					$('#dlg').dialog('open');
+				}else {
+				    message('获取数据失败','warning');
+			    }               
+	        }   
+		});
+	});
+	$("#btn_remove").click(function(){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		var name = row.username;
+		$.messager.confirm('删除确认', "是否确认删除代理"+name+"?", function(r){
+			if (r){
+				$.ajax({   
+			        type: 'POST', 
+			        url: '/ajax/agent-list.html',   
+			        data: {action:'del',id:id},
+			        dataType:'json',
+			        beforeSend:function(){   
+			        	wait_open(); 
+			        },		    
+			        complete: function() {   
+			        	wait_close();
+			        },   
+			        success: function(data){
+			        	if(data.result==true){
+			        		deleteRow();
+			        		message('删除成功','info');
+			        		$('#dg').datagrid('reload');
+						}else {
+						    message(data.msg,'warning');
+					    }               
+			        }   
+				});
+			}
+			return false;
+		});
+	});
+	$('#status input').click(function(){
+		var v = $(this).val();
+		$("#hstatus").val(v);
+	});
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<style>
+#menu_list ul {
+	MARGIN-LEFT: 0px; PADDING-BOTTOM: 10px; MARGIN-BOTTOM: 10px; MARGIN-TOP: -10px; text-align: left;
+}
+#menu_list li {
+	display: block; FLOAT: left; WIDTH:260px;  PADDING-LEFT: 0px; PADDING-RIGHT: 0px;line-height: 30px;
+}
+</style>
+<table id="menu_list">
+	<tr>
+		<td>
+		注：列表是所有权限的前置条件，无列表权限，菜单不显示。查看权限为查看单条记录的所有数据。查看权限为修改和编辑的前置条件。无查看权限无法编辑和修改。
+		</td>
+	</tr>
+	<tr>
+		<td><hr/></td>
+	</tr>
+	<tr>
+		<td>
+		管理组名称:<input id="name" class="easyui-validatebox textbox" data-options="required:true,novalidate:true"> 
+		<a href="javascript:all();">全选</a>|<a href="javascript:no_all();">全不选</a>
+		</td>
+	</tr>
+	<tr>
+		<td><hr/></td>
+	</tr>
+	<tr>
+		<td>
+		<table>
+			<tr>
+				<td><span class="b">冲正负</span><input type="checkbox" id="menu_undo" name="menus_undo" {{if $menus_undo=='Y'}}checked="checked"{{/if}} value="Y"></td>
+				<td><span class="b">资金审核</span><input type="checkbox" id="menu_exam" name="menus_exam" {{if $menus_exam=='Y'}}checked="checked"{{/if}} value="Y"></td>
+				<td><span class="b">资金确认</span><input type="checkbox" id="menu_conf" name="menus_conf" {{if $menus_conf=='Y'}}checked="checked"{{/if}} value="Y"></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td><hr/></td>
+	</tr>
+{{foreach from=$menus item=data}}
+	<tr>
+		<td><span class="size18 b">{{$data.name}}</span>:</td>
+	</tr>
+	<tr>
+		<td><ul>
+		{{foreach from=$data.menu item=d}}
+		<li>
+		<span class="b">{{$d.name}}</span><input type="checkbox" id="menu_{{$d.id}}" onclick="menus({{$d.id}})" name="menus" {{if $d.is_ck==1}}checked="checked"{{/if}} value="{{$d.id}}">
+		<table id="ck_{{$d.id}}">
+			<tr>
+				<td><input type="checkbox" id="menu_{{$d.id}}_1" onclick="menus_ck({{$d.id}},1)" name="menus_list" {{if $d.is_list==1}}checked="checked"{{/if}} value="{{$d.id}}">列表</td>
+				<td><input type="checkbox" id="menu_{{$d.id}}_5" onclick="menus_ck({{$d.id}},5)" name="menus_one" {{if $d.is_one==1}}checked="checked"{{/if}} value="{{$d.id}}">查看</td>
+				<td><input type="checkbox" id="menu_{{$d.id}}_2" onclick="menus_ck({{$d.id}},2)" name="menus_add" {{if $d.is_add==1}}checked="checked"{{/if}} value="{{$d.id}}">添加</td>
+				<td><input type="checkbox" id="menu_{{$d.id}}_3" onclick="menus_ck({{$d.id}},3)" name="menus_edit" {{if $d.is_edit==1}}checked="checked"{{/if}} value="{{$d.id}}">编辑</td>
+				<td><input type="checkbox" id="menu_{{$d.id}}_4" onclick="menus_ck({{$d.id}},4)" name="menus_del" {{if $d.is_del==1}}checked="checked"{{/if}} value="{{$d.id}}">删除</td>
+			</tr>
+		</table>
+		</li>
+		{{/foreach}}
+		</ul></td>
+	</tr>
+	<tr>
+		<td><hr/></td>
+	</tr>
+{{/foreach}}
+</table>
+<script>
+function all(){  
+	$('[type=checkbox]:checkbox').each(function(){
+		$(this).attr("checked",true);
+		this.checked = true;
+	});
+}
+function no_all(){ 
+	$('[type=checkbox]:checkbox').each(function(){
+		$(this).attr("checked",false);
+		this.checked = false;
+	});
+}
+function menus_ck(id,type){
+	var ck = $('#menu_'+id+'_'+type).is(':checked');
+	if(ck==false){
+		$('#menu_'+id).attr("checked",false);
+		$('#menu_'+id).checked = false;
+	}
+}
+function menus(id){
+	var ck = $('#menu_'+id).is(':checked');
+	$('#ck_'+id+' [type=checkbox]:checkbox').each(function(){
+		if(ck==true){
+			$(this).attr("checked",true);
+			this.checked = true;
+		}else{
+			$(this).attr("checked",false);
+			this.checked = false;
+		}
+	});
+}
+</script>

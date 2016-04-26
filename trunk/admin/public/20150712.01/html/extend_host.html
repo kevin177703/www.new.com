@@ -1,0 +1,186 @@
+{{$header}}
+<body>
+	<table id="dg" class="easyui-datagrid" title="网站域名" style="width:100%;height:auto"
+			data-options="
+				rownumbers:true,singleSelect:true,pagination:true,pageSize:20,
+				queryParams: {'action':'all'},
+				iconCls: 'icon-save',
+				toolbar: '#tb',
+				url: '/ajax/extend-host.html',
+				method: 'post',
+				onClickRow: onClickRow
+			">
+		<thead>
+			<tr>
+				<th data-options="field:'web_host',width:200">网站域名</th>
+				<th data-options="field:'status_wz',width:60">状态</th>
+				<th data-options="field:'addtime',width:130">添加时间</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="tb" style="padding:2px 0">
+		<table cellpadding="0" cellspacing="0" style="width:100%">
+			<tr>
+				<td style="padding-left:2px">
+				{{if $is_add=='Y'}}
+					<a href="javascript:void(0);" id="btn_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
+				{{/if}}
+				{{if $is_edit=='Y'}}
+					<a href="javascript:void(0);" id="btn_edit" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">编辑</a>
+				{{/if}}
+				{{if $is_del=='Y'}}
+					<a href="javascript:void(0);" id="btn_remove" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
+				{{/if}}
+				</td>
+				<td style="text-align:right;padding-right:2px">
+					<input id="search" class="easyui-searchbox" data-options="prompt:'输入代理帐号'" style="width:250px"></input>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg" class="easyui-dialog" title="代理设置" style="width:350px;height:auto;padding:10px"
+			data-options="
+				iconCls: 'icon-edit',
+				buttons: '#dlg-buttons'
+			">
+		<table cellpadding="5">
+			<tr>
+				<td>网站域名:</td>
+				<td><input id="web_host" class="easyui-validatebox textbox" data-options="required:true,novalidate:true"><span id="pw_msg"></span></td>
+			</tr>
+			<tr id="status">
+				<td>是否开启:</td>
+				<td>
+				<input type="hidden" id="hstatus" value="Y" />
+				<input type="radio" id="yes" name="status" value="Y" checked="checked"><span>开启</span>
+				<input type="radio" id="no" name="status" value="N"><span>禁用</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg-buttons">
+		<input type="hidden" id="id" value="0" />
+		<a href="javascript:void(0)" class="easyui-linkbutton" id="btn_save">保存</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+	</div>
+<script type="text/javascript">
+$(function(){
+	$('#dlg').dialog('close');
+	$('.validatebox-text').bind('blur', function(){
+		$(this).validatebox('enableValidation').validatebox('validate');
+	});
+	$("#search").searchbox({
+	    searcher: function (val, name) {
+	        $('#dg').datagrid('options').queryParams.search = val;
+	        $('#dg').datagrid('reload');
+	    },
+	    prompt: '输入代理帐号'
+	});
+	$("#btn_save").click(function(){
+		var id = $("#id").val();
+		var web_host = $("#web_host").val();
+		var status = $("#hstatus").val();
+		if(isEmptyVal(web_host)){
+			message('请输入网站域名','warning');
+			return false;
+		}
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/extend-host.html',   
+	        data: {action:'save',id:id,web_host:web_host,status:status},
+	        dataType:'json',
+	        beforeSend:function(){   
+	        	wait_open();    
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },     
+	        success: function(data){
+				if(data.result==true){	
+					message('保存成功','info');
+					$('#dlg').dialog('close');
+					$('#dg').datagrid('reload');
+				}else {
+					message(data.msg,'error');
+			    }               
+	        }   
+		});
+	});
+	$("#btn_add").click(function(){
+		$("#id").val(0);
+		$("#web_host").val("");
+		$('#dlg').dialog('open');
+	});
+	$("#btn_edit").click(function(){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/extend-host.html',   
+	        data: {action:'one',id:id},
+	        dataType:'json',
+	        beforeSend:function(){   
+	        	wait_open();    
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        } ,   
+	        success: function(data){
+				if(data.result==true){
+					var data= data.data;
+					$("#id").val(data.id);
+					$("#web_host").val(data.web_host);
+					$("#hstatus").val(data.status);
+					if(data.status=='Y'){
+						$('input[name=status]').get(0).checked = true;
+					}else{
+						$('input[name=status]').get(1).checked = true;
+					}
+					$('#dlg').dialog('open');
+				}else {
+				    message('获取数据失败','warning');
+			    }               
+	        }   
+		});
+	});
+	$("#btn_remove").click(function(){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		var web_host = row.web_host;
+		$.messager.confirm('删除确认', "是否确认删除域名"+web_host+"?", function(r){
+			if (r){
+				$.ajax({   
+			        type: 'POST', 
+			        url: '/ajax/extend-host.html',   
+			        data: {action:'del',id:id},
+			        dataType:'json',
+			        beforeSend:function(){   
+			        	wait_open(); 
+			        },		    
+			        complete: function() {   
+			        	wait_close();
+			        },   
+			        success: function(data){
+			        	if(data.result==true){
+			        		deleteRow();
+			        		message('删除成功','info');
+			        		$('#dg').datagrid('reload');
+						}else {
+						    message(data.msg,'warning');
+					    }               
+			        }   
+				});
+			}
+			return false;
+		});
+	});
+	$('#status input').click(function(){
+		var v = $(this).val();
+		$("#hstatus").val(v);
+	});
+})
+</script>
+</body>
+</html>

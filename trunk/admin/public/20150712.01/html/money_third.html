@@ -1,0 +1,272 @@
+{{$header}}
+<body>
+	<table id="dg" class="easyui-datagrid" title="第三方支付" style="width:100%;height:auto"
+			data-options="
+				rownumbers:true,singleSelect:true,pagination:true,pageSize:20,
+				queryParams: {'action':'all'},
+				iconCls: 'icon-save',
+				toolbar: '#tb',
+				url: '/ajax/money-third.html',
+				method: 'post',
+				onClickRow: onClickRow
+			">
+		<thead>
+			<tr>
+				<th data-options="field:'type_wz',width:80">支付方式</th>
+				<th data-options="field:'username',width:150">支付帐号</th>
+				<th data-options="field:'code',width:150">商户号</th>
+				<th data-options="field:'pass',width:150">支付密码</th>
+				<th data-options="field:'skey',width:400">密钥</th>
+				<th data-options="field:'url',width:180">支付域名</th>
+				<th data-options="field:'money',width:80">支付金额</th>
+				<th data-options="field:'status_wz',width:80">状态</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="tb" style="padding:2px 0">
+		<table cellpadding="0" cellspacing="0" style="width:100%">
+			<tr>
+				<td style="padding-left:2px">
+				{{if $is_add=='Y'}}
+					<a href="javascript:void(0);" id="btn_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
+				{{/if}}
+				{{if $is_edit=='Y'}}
+					<a href="javascript:void(0);" id="btn_edit" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">编辑</a>
+				{{/if}}
+				{{if $is_del=='Y'}}
+					<a href="javascript:void(0);" id="btn_remove" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
+				{{/if}}
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg" class="easyui-dialog" title="设置资金类型" style="width:450px;height:auto;padding:10px"
+			data-options="
+				iconCls: 'icon-edit',
+				buttons: '#dlg-buttons'
+			">
+		<table cellpadding="5">
+			<tr id="type">
+				<td>支付类型:</td>
+				<td>
+				<input type="hidden" id="htype" value="1" />
+				<input type="radio" id="r3" name="type" value="1" checked="checked"><span>易宝支付</span>
+				<!-- <input type="radio" id="r4" name="type" value="2"><span>宝付支付</span> -->
+				</td>
+			</tr>
+			<tr>
+				<td>支付帐号:</td>
+				<td><input id="username" class="easyui-validatebox textbox" data-options="required:true,novalidate:true"></td>
+			</tr>
+			<tr>
+				<td>商户号:</td>
+				<td><input id="code" class="easyui-validatebox textbox" data-options="required:true,novalidate:true"></td>
+			</tr>
+			<tr>
+				<td>支付密码:</td>
+				<td><input id="pass" class="easyui-validatebox textbox" data-options="required:true,novalidate:true"></td>
+			</tr>
+			<tr>
+				<td>密钥:</td>
+				<td><input class="easyui-textbox" id="skey" data-options="multiline:true" style="height:80px;width:300px"></input></td>
+			</tr>
+			<tr>
+				<td>支付域名:</td>
+				<td><input id="url" class="easyui-validatebox textbox" data-options="required:true,novalidate:true">(不要添加http://)</td>
+			</tr>
+			<tr>
+				<td>支付成功金额:</td>
+				<td><input id="money" class="easyui-validatebox textbox" data-options="required:true,novalidate:true"></td>
+			</tr>
+			<tr id="status">
+				<td>状态:</td>
+				<td>
+				<input type="hidden" id="hstatus" value="Y" />
+				<input type="radio" id="r1" name="status" value="Y" checked="checked"><span>启用</span>
+				<input type="radio" id="r2" name="status" value="N"><span>禁用</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg-buttons">
+		<input type="hidden" id="id" value="0" />
+		<a href="javascript:void(0)" class="easyui-linkbutton" id="btn_save">保存</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+	</div>
+	
+<script type="text/javascript">
+$(function(){
+	$('#dlg').dialog('close');
+	$('.validatebox-text').bind('blur', function(){
+		$(this).validatebox('enableValidation').validatebox('validate');
+	});
+	$("#btn_save").click(function(){
+		var id = $("#id").val();
+		var type = $("#htype").val();
+		var username = $("#username").val();
+		var code = $("#code").val();
+		var pass = $("#pass").val();
+		var skey = $("#skey").val();
+		var url = $("#url").val();
+		var money = $("#money").val();
+		var status = $("#hstatus").val();
+		
+		if(isEmptyVal(type)){
+			message('请选择支付类型','warning');
+			return false;
+		}
+		if(isEmptyVal(username)){
+			message('请输入支付帐号','warning');
+			return false;
+		}
+		if(isEmptyVal(code)){
+			message('请输入商户号','warning');
+			return false;
+		}
+		if(isEmptyVal(pass)){
+			message('请输入支付密码','warning');
+			return false;
+		}
+		if(isEmptyVal(skey)){
+			message('请输入密钥','warning');
+			return false;
+		}
+		if(isEmptyVal(url)){
+			message('请输入支付域名','warning');
+			return false;
+		}
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/money-third.html',   
+	        data: {
+	        	action:'save',
+	        	id:id,
+	        	type:type,
+	        	username:username,
+	        	code:code,
+	        	pass:pass,
+	        	skey:skey,
+	        	url:url,
+	        	money:money,
+	        	status:status
+	        },
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },   
+	        success: function(data){
+				if(data.result==true){	
+					message('保存成功','info');
+					$('#dlg').dialog('close');
+					$('#dg').datagrid('reload');
+				}else {
+					message(data.msg,'error');
+			    }               
+	        }   
+		});
+	});
+	$("#btn_add").click(function(){
+		$("#id").val(0);
+		$("#username").val("");
+		$("#code").val("");
+		$("#pass").val("");
+		$("#skey").textbox('setValue',"");
+		$("#url").val("");
+		$("#money").val("0.00");
+		$("#htype").val(1);
+		$("#hstatus").val("Y");
+		$('input[name=type]').get(0).checked = true;
+		$('input[name=status]').get(0).checked = true;
+		$('#dlg').dialog('open');
+	});
+	$("#btn_edit").click(function(){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/money-third.html',   
+	        data: {action:'one',id:id},
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },   
+	        success: function(data){
+				if(data.result==true){
+					var data = data.data;
+					$("#id").val(data.id);
+					$("#username").val(data.username);
+					$("#code").val(data.code);
+					$("#pass").val(data.pass);
+					$("#skey").textbox('setValue',data.skey);
+					$("#url").val(data.url);
+					$("#money").val(data.money);
+					$("#htype").val(data.type);
+					$("#hstatus").val(data.status);
+					if(data.type=='1'){
+						$('input[name=type]').get(0).checked = true;
+					}else{
+						$('input[name=type]').get(1).checked = true;
+					}
+					if(data.status=='Y'){
+						$('input[name=status]').get(0).checked = true;
+					}else{
+						$('input[name=status]').get(1).checked = true;
+					}
+					$('#dlg').dialog('open');
+				}else {
+				    message('获取数据失败','warning');
+			    }               
+	        }   
+		});
+	});
+	$("#btn_remove").click(function(){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		var username = row.username;
+		$.messager.confirm('删除确认', '是否确认删除'+username+'?', function(r){
+			if (r){
+				$.ajax({   
+			        type: 'POST', 
+			        url: '/ajax/money-third.html',   
+			        data: {action:'del',id:id},
+			        dataType:'json',
+			        beforeSend:function(){
+			        	wait_open();
+			        },		    
+			        complete: function() {   
+			        	wait_close();
+			        },  
+			        success: function(data){
+			        	if(data.result==true){
+			        		deleteRow();
+			        		message('删除成功','info');
+			        		$('#dg').datagrid('reload');
+						}else {
+						    message(data.msg,'warning');
+					    }               
+			        }   
+				});
+			}
+			return false;
+		});
+	});
+	$('#status input').click(function(){
+		var v = $(this).val();
+		$("#hstatus").val(v);
+	});
+	$('#type input').click(function(){
+		var v = $(this).val();
+		$("#htype").val(v);
+	});
+})
+</script>
+</body>
+</html>

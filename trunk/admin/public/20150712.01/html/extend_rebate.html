@@ -1,0 +1,62 @@
+{{$header}}
+<body>
+	<div style="margin:20px 0;"></div>
+	<div class="easyui-panel" title="返水设置" style="width:450px">
+		<div style="padding:10px 30px 20px 30px">
+	    	<table cellpadding="5">
+	    		<tr>
+	    		<td colspan=3><span class="red">*</span>最大返水设置后，只能增加不能减少。</td>
+	    		</tr>
+	    	    <tr>
+	    			<td width="80">游戏</td>
+	    			<td width="120">最大返水%(0-20)</td>
+	    			<td width="120">最小返水%(0-20)</td>
+	    		</tr>
+	    		{{foreach from=$data key=k item=d}}
+	    		<tr>
+	    			<td>{{$d.name}}</td>
+	    			<td><input id="{{$d.code}}_max" name="rebate" class="easyui-validatebox textbox" style="width:80px" value="{{$d.max}}" data-options="required:true,novalidate:true"></td>
+	    			<td><input id="{{$d.code}}_min" name="rebate" class="easyui-validatebox textbox" style="width:80px" value="{{$d.min}}" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		{{/foreach}}
+	    	</table>
+		    <div style="text-align:center;padding:5px">
+		    	<a href="javascript:void(0)" class="easyui-linkbutton" style="width:100px;height:32px" id="btn_save">提交</a>
+		    </div>
+	    </div>
+	</div>
+<script type="text/javascript">
+$(function(){
+	$("#btn_save").click(function(){
+		var data="";
+		$("input[name='rebate']").each(function(){
+		    var value = $(this).val();
+		    var id = $(this).attr("id");
+		    data = data + id+":"+value+";";
+		});
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/extend-rebate.html',   
+	        data: {action:'save',data:data},
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },   
+	        success: function(data){
+				if(data.result==true){	
+					message('保存成功','info');
+					$('#dlg').dialog('close');
+					$('#dg').datagrid('reload');
+				}else {
+					message(data.msg,'error');
+			    }               
+	        }   
+		});
+	});
+})
+</script>
+</body>
+</html>

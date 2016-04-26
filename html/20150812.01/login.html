@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="robots" content="nofollow">
+<title>WELCOME</title>
+<link rel="shortcut icon" href="images/favicon.ico"/>
+<link rel="bookmark" href="images/favicon.ico"/>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="http://img1.gbstatic.com/js/artDialog/jquery.artDialog.js?skin=default"></script>
+<script type="text/javascript" src="js/JQuery.BlockUI.min.2.39.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+
+<style type="text/css">
+html,body {background:url('') #000;}
+body {background:url(images/login/bg.jpg) no-repeat center 0px;}
+.play_box {width:400px;margin:auto;padding:139px 0px 139px;}
+.play_box h2 {text-align:center;color:#F1E3C2;font-weight:normal;font-size:25px;padding-top:28px;padding-bottom:35px;margin:0px; height:20px; line-height:20px;}
+.play_box form td {color:#DEBD72;font-size:16px;}
+.play_box .step_select {clear:left;}
+.play_box .step_select label {float:left;margin-right:8px;_display:inline;color:#888;font-size:18px;height:36px;line-height:35px;padding-left:36px;width:116px;cursor:pointer;background:url(images/login/play_but.png) no-repeat 0px 0px;}
+.play_box .step_select label.on {color:#DEBD72;background-position:0px -40px;}
+.play_box .P_input {border:0px;color:#DEBD72;padding:5px 10px;width:70px;height:26px;text-align:center;font-size:16px;background:url(images/login/play_but.png) no-repeat 0px -80px;}
+.play_box .P_input2 {border:0px;color:#DEBD72;padding:5px 10px;width:100px;height:26px;text-align:center;font-size:16px;background:url(images/login/inputbg.png) no-repeat 0 0;}
+.play_box .step_but {width:180px;height:40px;line-height:39px;font-size:16px;color:#fff5dd;cursor:pointer;border:0px;background:url(images/login/play_but.png) no-repeat 0px -120px;}
+.play_box .step_but_over {background-position:0px -160px;}
+a.J_put2 {display:inline-block;color:#F8E9C7;width:125px;height:40px;line-height:39px;text-align:center;font-size:16px;background:url(images/login/play_but.png) no-repeat 0px -200px;cursor:pointer;}
+a.J_put2:hover {text-decoration:none;background-position:0px -240px;}
+#ICode_txt {color:#999;font-size:16px;line-height:130%;}
+#toGamePlay {padding:40px 0px 120px;text-align:center;font-size:14px;color:#ddd;display:none;}
+</style>
+<script type="text/javascript">
+
+function sp(id){
+
+	$(".step_select label").removeClass("on");
+	$(".step_select label:eq("+ (id-1) +")").addClass("on");
+	$("#spvalue").val(id);
+	
+	
+	if(id == 2){
+	
+		$("#A3D9X5").show();
+
+		$("#u").focus();
+	
+	}else{
+
+		$("#A3D9X5").hide();
+		$("#c").focus();
+	}
+
+}
+
+//提交表单
+function checktoPlayForm(){
+
+	var spval = $("#spvalue").val();
+	
+	var spUrl = '/game/trylogin';
+	
+	if(spval == 2) spUrl='/index/login';
+	
+	var username_str = $('#u').val();
+	var password_str = $('#p').val();
+	var code_str = $('#c').val();
+
+
+	if(isEmptyVal(code_str)){
+
+	   msg_box_show('请输入验证码!',5,'','error','c');
+
+	   return;
+
+	}
+
+
+if(spval == 2){
+		if(isEmptyVal(username_str)){
+
+	  		 msg_box_show('请输入用户名!',5,'','error','u');
+			 return;
+
+		}
+
+
+		if(isEmptyVal(password_str)){
+
+	   		msg_box_show('请输入密码!',5,'','error','p');
+			return;
+		}
+
+}
+	
+	
+//开始提交表单
+			
+					$.ajax({ 
+					  
+			              type: "POST",   
+			              url: spUrl,   
+			              data: "c="+code_str+"&u="+username_str+"&p="+password_str,   
+			              dataType:'json',   
+			              async: false, 
+			              beforeSend:function(){   
+								showloading();    
+			               },
+											    
+			              complete: function() {   
+			                   $.unblockUI();   
+			               } ,   
+			               success: function(data){ 
+											  
+							//开始处理
+							if(data.code == 1){
+								//登陆成功,刷新当前页面	
+								//msg_box_show('登陆成功,3秒后将进入会员中心!',3,'/member/index','succeed');
+								
+								top.location.href = '/game/play?gid=4';
+								
+							} else {
+							
+								msg_box_show(data.msg,8,'','error','');
+								
+							}
+			    
+			                                  
+						}   
+			       });  
+			
+			
+	//提交表单结束	
+
+}
+
+$(function(){
+
+	$("#imgcode").attr("src","/index/loginimg/?"+Math.random());
+
+	//绑定验证码焦点事件
+	
+	$("#c").focus();
+
+	$("#imgcode").click(function(){
+		  $("#imgcode").attr("src","/index/loginimg/?"+Math.random());
+		 
+	});
+	
+	
+	
+});
+
+</script>
+</head>
+
+<body>
+<div class="play_box">
+<h2></h2>
+
+<form id="toPlayForm" name="toPlayForm" action="" method="post">
+
+  <table width="100%" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+      <td width="17%" height="58">请选择：</td>
+      <td>
+	  <input type="hidden" name="spvalue" id="spvalue" value="1" />
+	  
+	  <div class="step_select aClear">
+	    <label vals="1" onclick="javascript:sp(1);" class="on">极速试玩</label>
+	    <label vals="2" onclick="javascript:sp(2);">会员登陆</label>
+	  </div>
+	</td>
+   </tr>
+	  
+<!--begin-->
+
+<tr id="A3D9X5" style="display:none;">
+      <td height="58">帐号：</td>
+<td>
+	  
+	  <table border="0" cellspacing="0" cellpadding="0">
+		<tr>
+		  <td><input type="text" name="u" id="u" value="" class="P_input2" /></td>
+		  <td>&nbsp;&nbsp;密码：</td>
+		  <td>&nbsp;<input type="password" name="p" id="p" value="" class="P_input2" /></td>
+		</tr>
+	  </table>
+</td>
+</tr>
+
+
+<!--222-->	  
+    <tr>
+      <td height="58">验证码：</td>
+      <td>
+	  <table border="0" cellspacing="0" cellpadding="0">
+		<tr>
+		  <td><input type="text" name="c" id="c" value="" class="P_input" maxlength="4" autocomplete="off" /></td>
+		  <td style="width:8px;">&nbsp;</td>
+		  <td><img id="imgcode" src="" title="更换验证码" style="cursor:pointer; height: 34px;" /></td>
+		  <td>&nbsp;</td>
+		  <td>-请输入验证码</td>
+		</tr>
+	  </table>
+	  </td>
+	</tr>
+	
+<!--end-->
+	
+	<tr>
+      <td height="58">&nbsp;</td>
+      <td>
+		<table border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+			<td></td>
+			<td></td>
+			<td><a href="javascript:checktoPlayForm();" class="J_put2" target="_top">马上提交</a></td>
+		  </tr>
+		</table>
+	  </td>
+	</tr>
+  </table>
+</form>
+</div>
+
+<div style="display: none;"></div>
+</body>
+</html>

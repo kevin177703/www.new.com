@@ -1,0 +1,312 @@
+{{$header}}
+<body>
+	<table id="dg" class="easyui-datagrid" title="资金记录" style="width:100%;height:auto"
+			data-options="
+				rownumbers:true,singleSelect:true,pagination:true,pageSize:20,
+				queryParams: {'action':'all'},
+				iconCls: 'icon-save',
+				toolbar: '#tb',
+				url: '/ajax/money-note.html',
+				method: 'post',
+				onClickRow: onClickRow
+			">
+		<thead>
+			<tr>
+				<th data-options="field:'orderid',width:150">订单号</th>
+				<th data-options="field:'username',width:100">会员帐号</th>
+				<th data-options="field:'truname',width:70">会员姓名</th>
+				<th data-options="field:'group_name',width:70">会员级别</th>
+				<th data-options="field:'money',width:80">金额(元)</th>
+				<th data-options="field:'type_name',width:100">资金类型</th>
+				<th data-options="field:'bank',width:170">收款银行</th>
+				<th data-options="field:'note',width:340">信息</th>
+				<th data-options="field:'status_name',width:60">状态</th>
+				<th data-options="field:'addtime_wz',width:130">添加时间</th>
+				<th data-options="field:'opnote',width:300">操作说明</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="tb" style="padding:5px;height:auto">
+		<div style="margin-bottom:5px">
+			{{if $is_conf=='Y'}}
+				<a href="javascript:void(0);" id="btn_ok" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true">资金接受</a>
+				<a href="javascript:;" id="btn_no" class="easyui-linkbutton" data-options="iconCls:'icon-no',plain:true">资金拒绝</a>
+			{{/if}}
+			{{if $is_exam=='Y'}}
+				<a href="javascript:;" id="btn_exam_ok" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">审核通过</a>
+				<a href="javascript:;" id="btn_exam_no" class="easyui-linkbutton" data-options="iconCls:'icon-no',plain:true">审核拒绝</a>
+			{{/if}}
+			{{if $is_undo=='Y'}}
+				<a href="javascript:;" id="btn_undo" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true">冲正负</a>
+			{{/if}}
+		</div>
+		<div>
+			帐号:<input class="easyui-validatebox textbox" style="width:120px;height:25px" id="username">
+			订单号:<input class="easyui-validatebox textbox" style="width:120px;height:25px" id="orderid">
+			日期:<input class="easyui-datebox" style="width:100px" id="begin">
+			至:<input class="easyui-datebox" style="width:100px" id="end">
+			会员级别:
+			<select class="easyui-combobox" panelHeight="auto" style="width:100px" id="groupid">
+				<option value="0">请选择</option>
+				{{foreach from=$data.users_group key=k item=users_group}}
+				<option value="{{$users_group.id}}">{{$users_group.name}}</option>
+				{{/foreach}}
+			</select>
+			资金类型:
+			<select class="easyui-combobox" panelHeight="auto" style="width:120px" id="type">
+				<option value="0">请选择</option>
+				{{foreach from=$data.money_type key=k item=money_type}}
+				<option value="{{$money_type.id}}">{{$money_type.name}}</option>
+				{{/foreach}}
+			</select>
+			资金状态:
+			<select class="easyui-combobox" panelHeight="auto" style="width:80px" id="status">
+				<option value="0">请选择</option>
+				{{foreach from=$data.money_status key=k item=money_status}}
+				<option value="{{$money_status.id}}">{{$money_status.name}}</option>
+				{{/foreach}}
+			</select>
+			操作员:<input class="easyui-validatebox textbox" style="width:100px;height:25px" id="operator">
+			金额:<input class="easyui-validatebox textbox" style="width:80px;height:25px" id="min_money">
+			至<input class="easyui-validatebox textbox" style="width:80px;height:25px" id="max_money">
+			<a href="javascript:;" class="easyui-linkbutton" iconCls="icon-search" id="search_submit">查询</a>
+		</div>
+	</div>
+	<div id="dlg_undo" class="easyui-dialog" title="冲正负" style="width:400px;height:auto;padding:10px"
+			data-options="
+				iconCls: 'icon-edit',
+				buttons: '#dlg-buttons_undo'
+			">
+		<table cellpadding="5">
+			<tr>
+				<td>账户:</td>
+				<td id="undo_username"></td>
+			</tr>
+			<tr>
+				<td>金额:</td>
+				<td><input id="money" class="easyui-validatebox textbox" style="width:100px;" data-options="required:true,novalidate:true">(冲负请填写负数)</td>
+			</tr>
+			<tr>
+				<td>说明:</td>
+				<td><input id="note" class="easyui-validatebox textbox" style="width:300px;" data-options="required:true,novalidate:true"></td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg-buttons_undo">
+		<input type="hidden" id="uid_undo" value="0" />
+		<a href="javascript:void(0)" class="easyui-linkbutton" id="btn_save_undo">确认</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg_undo').dialog('close')">取消</a>
+	</div>
+	<div id="dlg_exam" class="easyui-dialog" title="审核拒绝" style="width:400px;height:auto;padding:10px"
+			data-options="
+				iconCls: 'icon-edit',
+				buttons: '#dlg-buttons_exam'
+			">
+		<table cellpadding="5">
+			<tr>
+				<td>订单号:</td>
+				<td id="exam_orderid"></td>
+			</tr>
+			<tr>
+				<td>说明:</td>
+				<td>
+				<select class="easyui-combobox" panelHeight="auto" style="width:120px" id="exam_note">
+				{{foreach from=$data.note_message key=k item=v}}
+					<option value="{{$k}}">{{$v}}</option>
+				{{/foreach}}
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td>备注:</td>
+				<td><input id="exam_note_other" class="easyui-validatebox textbox"></td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg-buttons_exam">
+		<input type="hidden" id="exam_id" value="0" />
+		<a href="javascript:void(0)" class="easyui-linkbutton" id="btn_save_exam">确认</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg_exam').dialog('close')">取消</a>
+	</div>
+	<div id="dlg_reject" class="easyui-dialog" title="拒绝" style="width:400px;height:auto;padding:10px"
+			data-options="
+				iconCls: 'icon-edit',
+				buttons: '#dlg-buttons_reject'
+			">
+		<table cellpadding="5">
+			<tr>
+				<td>订单号:</td>
+				<td id="reject_orderid"></td>
+			</tr>
+			<tr>
+				<td>说明:</td>
+				<td>
+				<select class="easyui-combobox" panelHeight="auto" style="width:120px" id="reject_note">
+				{{foreach from=$data.note_message key=k item=v}}
+					<option value="{{$k}}">{{$v}}</option>
+				{{/foreach}}
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td>备注:</td>
+				<td><input id="reject_note_other" class="easyui-validatebox textbox"></td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg-buttons_reject">
+		<input type="hidden" id="reject_id" value="0" />
+		<a href="javascript:void(0)" class="easyui-linkbutton" id="btn_save_reject">确认</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg_reject').dialog('close')">取消</a>
+	</div>
+<script type="text/javascript">
+$(function(){
+	$("#dlg_reject").dialog('close');
+	$('#dlg_undo').dialog('close');	
+	$('#dlg_exam').dialog('close');	
+	$('.validatebox-text').bind('blur', function(){
+		$(this).validatebox('enableValidation').validatebox('validate');
+	});
+	//接受
+	$("#btn_ok").click(function(){
+		btnck_ajax(1,"conf");
+	});
+	//拒绝
+	$("#btn_no").click(function(){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		$("#reject_orderid").html(row.orderid);
+		$('#dlg_reject').dialog('open');
+	});
+	//拒绝确定
+	$("#btn_save_reject").click(function(){
+		var note = $("#reject_note").combobox('getValue');
+		var note_other = $("#reject_note_other").val();
+		if(isEmptyVal(note) && isEmptyVal(note_other)){
+			message("请写明拒绝原因",'warning');
+			return false;
+		}
+		btnck_ajax(2,"conf",note,note_other);
+	});
+	//审核通过
+	$("#btn_exam_ok").click(function(){
+		btnck_ajax(3,"exam","","");
+	});
+	//审核拒绝
+	$("#btn_exam_no").click(function(){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		$("#exam_orderid").html(row.orderid);
+		$('#dlg_exam').dialog('open');
+	});
+	//审核拒绝确认
+	$("#btn_save_exam").click(function(){
+		var note = $("#exam_note").combobox('getValue');
+		var note_other = $("#exam_note_other").val();
+		if(isEmptyVal(note) && isEmptyVal(note_other)){
+			message("请写明拒绝原因",'warning');
+			return false;
+		}
+		btnck_ajax(4,"exam",note,note_other);
+	});
+	
+	//1接受，2拒绝，3审核通过，4审核拒绝
+	function btnck_ajax(type,action,note,note_other){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/opmoney.html',   
+	        data: {action:action,type:type,id:id,note:note,note_other:note_other},
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },  
+	        success: function(data){
+	        	if(data.result==true){
+	        		message(data.data,'info');
+	        		if(action=='conf')$('#dlg_reject').dialog('close');
+	        		if(action=='exam')$('#dlg_exam').dialog('close');
+	        		$('#dg').datagrid('reload');
+				}else {
+				    message(data.msg,'warning');
+			    }               
+	        }   
+		});
+	}
+	//显示冲正负
+	$("#btn_undo").click(function(){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		$("#undo_username").html(row.username);
+		$("#uid_undo").val(row.uid);
+		$("#money").val('');
+		$("#note").val('');
+		$('#dlg_undo').dialog('open');
+	});
+	//保存冲正负
+	$("#btn_save_undo").click(function(){
+		var uid = $("#uid_undo").val();
+		var money = $("#money").val();
+		var note = $("#note").val();
+		if(isEmptyVal(money)){
+			message('请填写金额','warning');
+			return false;
+		}
+		if(isEmptyVal(note)){
+			message('请填写说明','warning');
+			return false;
+		}
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/opmoney.html',   
+	        data: {action:'undo',uid:uid,money:money,note:note},
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },  
+	        success: function(data){
+	        	if(data.result==true){
+	        		message('冲正负成功','info');
+	        		$('#dlg_undo').dialog('close');
+	        		$('#dg').datagrid('reload');
+				}else {
+				    message(data.msg,'warning');
+			    }               
+	        }   
+		});
+	});
+	$("#search_submit").click(function(){
+		var username = $("#username").val();
+		var orderid = $("#orderid").val();
+		var begin = $("#begin").datebox("getValue");
+		var end = $("#end").datebox("getValue");
+		var groupid = $("#groupid").combobox('getValue');
+		var type = $("#type").combobox('getValue');
+		var status = $("#status").combobox('getValue');
+		var operator = $("#operator").val();
+		var min_money = $("#min_money").val();
+		var max_money = $("#max_money").val();
+		$('#dg').datagrid('options').queryParams.username = username;
+		$('#dg').datagrid('options').queryParams.begin = begin;
+		$('#dg').datagrid('options').queryParams.end = end;
+		$('#dg').datagrid('options').queryParams.groupid = groupid;
+		$('#dg').datagrid('options').queryParams.type = type;
+		$('#dg').datagrid('options').queryParams.status = status;
+		$('#dg').datagrid('options').queryParams.operator = operator;
+		$('#dg').datagrid('options').queryParams.min_money = min_money;
+		$('#dg').datagrid('options').queryParams.max_money = max_money;
+	    $('#dg').datagrid('reload');
+	});
+})
+
+</script>
+</body>
+</html>

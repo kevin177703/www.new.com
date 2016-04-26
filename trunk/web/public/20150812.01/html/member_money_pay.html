@@ -1,0 +1,103 @@
+{{$header}}
+<link  type="text/css"  rel="stylesheet"  href="{{$css}}paytip.css"/>
+<div class="banner" style="background:url({{$images}}pages/banner/8.png) center top;"></div>
+<div class="pagesmain">
+{{include file="message_center.html"}}
+	<div class="w990">
+		<div class="m">
+	{{include file="member_left.html"}}
+			<div class="mright">
+                        <div class="position">
+                    <span>当前位置：</span><a href="javascript:;">财务中心&nbsp;/&nbsp;在线支付</a>
+                        </div>
+                        <div class="mcaiwucontent">
+                        	<div class="guangbo">在线快速充值，额度范围：{{$data.mindeposit}} ~ {{$data.maxdeposit}}元/次！建议使用IE8.0以上浏览器进行支付。</div>
+<form name="PayForm" id="PayForm" action="<!--传输在线支付页面URL-->" method="post" target="_blank">                 
+<table width="640" border="0" cellspacing="0" cellpadding="0">
+  <tbody><tr>
+    <td width="20"><font color="d92022">*</font></td>
+    <td width="90">会员帐号：</td>
+    <td width="530">{{$username}}</td>
+  </tr>
+  <tr>
+    <td><font color="d92022">*</font></td>
+    <td>存款金额：</td>
+    <td><input type="text" id="paymoney" name="paymoney" value="100" style="width:150px" autocomplete="off" maxlength="5">&nbsp;&nbsp;&nbsp;&nbsp;元</td>
+  </tr>
+  <tr>
+    <td><font color="d92022">*</font></td>
+    <td>选择银行：</td>
+    <td>&nbsp;</td>
+  </tr>
+   <tr style="line-height:25px">
+    <td>&nbsp;</td>
+    <td colspan="3" class="yinhang">
+    	<input type="hidden" name="paybank" id="paybank" value="ABC" />
+		<label val="ABC" class="banklable bl_on"><img src="{{$images}}bankimg/nongye.gif"></label>
+	    <label val="ICBC" class="banklable"><img src="{{$images}}bankimg/gongshang.gif"></label>
+	    <label val="BOC" class="banklable"><img src="{{$images}}bankimg/zhongguo.gif"></label>
+	    <label val="CCB" class="banklable"><img src="{{$images}}bankimg/jianshe.gif"></label>
+	    <label val="POST" class="banklable"><img src="{{$images}}bankimg/youzheng.gif"></label>
+	    <label val="BOCO" class="banklable"><img src="{{$images}}bankimg/jiaotong.gif"></label>
+	    <label val="CEB" class="banklable"><img src="{{$images}}bankimg/guangda.gif"></label>
+	    <label val="GDB" class="banklable"><img src="{{$images}}bankimg/guangfa.gif"></label>
+	    <label val="PINGANBANK" class="banklable"><img src="{{$images}}bankimg/pingan.gif"></label>
+	    <label val="SPDB" class="banklable"><img src="{{$images}}bankimg/shangpufa.gif"></label>
+	    <label val="CIB" class="banklable"><img src="{{$images}}bankimg/xingye.gif"></label>
+	    <label val="CMBCHINA" class="banklable"><img src="{{$images}}bankimg/zhaohang.gif"></label>   
+    </td>
+    </tr>
+  </tbody>
+
+</table>
+<div style="height:25px;"></div>
+<input type="hidden" name="paymd5" id="paymd5" value="" />
+<input type="hidden" name="payorderid" id="payorderid" value="" />
+<a href="javascript:moneyPaySumbit();"><img src="{{$images}}member/mcaiwubt.png" style="margin-left:40px"></a>
+</form>
+ </div>
+</div>
+	<!-- 支付遮罩开始 -->
+	<div class="modal to-pay-tip" id="toPayTip" style="display: none;">
+			<div class="modal-header">
+				<h5>请在弹出的新窗口中完成支付...
+				（提醒：在线充值过程中浏览器可能会拦截银行跳转到支付页面，当浏览器弹出拦截提示时，请点击总是允许，下次将不再现提示！）
+				</h5>
+				<a href="javascript:Jclose();" class="Jclose" title="关闭">&nbsp;</a>
+			</div>
+			<div class="modal-body">
+				<div class="pay-tip clearfix">
+					<div class="fail">
+						<h4>如果支付失败...</h4>
+						<p>支付出错，推荐&nbsp;&nbsp;<a href="/member-money-bank.html" id="alipayTrigger">银行转账 &gt;</a></p>
+						<p>其他问题，联系&nbsp;&nbsp;<a href="javascript:onlineChat();">在线客服 &gt;</a></p>
+					</div>
+					<div class="success">
+						<h4>已支付成功</h4>
+						<p>立即查看&nbsp;&nbsp;<a href="/member/k4#u">订单详情 &gt;</a></p>
+						<br />
+						<p><a href="javascript:Jclose();">[立即返回] &gt;</a></p>
+					</div>
+				</div>
+			</div>
+	</div>
+	<!-- 支付遮罩结束 -->
+<script type="text/javascript">
+function Jclose(){
+	$.unblockUI();
+}
+$(function(){
+	switchM(0,'m_1_1');
+	$(".banklable").each(function (id, dom) { 
+		$(dom).click(function(){
+			$(".banklable").removeClass("bl_on");
+			$(this).addClass("bl_on");
+			$("#paybank").val($(this).attr("val"));
+		});
+	});
+});
+</script> 	
+		</div>
+	</div>
+</div>
+{{$footer}}

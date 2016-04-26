@@ -1,0 +1,201 @@
+{{$header}}
+<body>
+	<table id="dg" class="easyui-datagrid" title="会员银行卡" style="width:100%;height:auto"
+			data-options="
+				rownumbers:true,singleSelect:true,pagination:true,pageSize:20,
+				queryParams: {'action':'all'},
+				iconCls: 'icon-save',
+				toolbar: '#tb',
+				url: '/ajax/user-bank.html',
+				method: 'post',
+				onClickRow: onClickRow
+			">
+		<thead>
+			<tr>
+				<th data-options="field:'username',width:150">会员帐号</th>
+				<th data-options="field:'bank_name',width:150">开户银行</th>
+				<th data-options="field:'card',width:250">银行帐号</th>
+				<th data-options="field:'province',width:150">开户省份</th>
+				<th data-options="field:'city',width:150">开户城市</th>
+				<th data-options="field:'address',width:200">开户网点</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="tb" style="padding:2px 0">
+		<table cellpadding="0" cellspacing="0" style="width:100%">
+			<tr>
+				<td style="padding-left:2px">
+					<!-- <a href="javascript:void(0);" id="btn_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a> -->
+					<a href="javascript:void(0);" id="btn_edit" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">编辑</a>
+					<a href="javascript:void(0);" id="btn_remove" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg" class="easyui-dialog" title="设置会员银行卡" style="width:400px;height:auto;padding:10px"
+			data-options="
+				iconCls: 'icon-edit',
+				buttons: '#dlg-buttons'
+			">
+		<table cellpadding="5">
+			<tr>
+				<td>会员帐号:</td>
+				<td><input id="username" class="easyui-validatebox textbox" disabled="disabled" data-options="required:true,novalidate:true"></td>
+			</tr>
+			<tr>
+				<td>开户银行:</td>
+				<td><input class="easyui-combobox" id="banktype_id" data-options="valueField:'id',textField:'name'"></td>
+			</tr>
+			<tr>
+				<td>银行帐号:</td>
+				<td><input id="card" value="0.00" class="easyui-validatebox textbox" data-options="required:true,novalidate:true"></td>
+			</tr>
+			<tr>
+				<td>开户省份:</td>
+				<td><input id="province" value="100.00" class="easyui-validatebox textbox" data-options="required:true,novalidate:true"></td>
+			</tr>
+			<tr>
+				<td>开户城市:</td>
+				<td><input id="city" value="10000.00" class="easyui-validatebox textbox" data-options="required:true,novalidate:true"></td>
+			</tr>
+			<tr>
+				<td>开户网点:</td>
+				<td><input id="address" value="" class="easyui-validatebox textbox" data-options="required:true,novalidate:true"></td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg-buttons">
+		<input type="hidden" id="id" value="0"/>
+		<a href="javascript:void(0)" class="easyui-linkbutton" id="btn_save">保存</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+	</div>
+<script type="text/javascript">
+$(function(){
+	$('#dlg').dialog('close');
+	$('.validatebox-text').bind('blur', function(){
+		$(this).validatebox('enableValidation').validatebox('validate');
+	});
+	$("#btn_save").click(function(){
+		var id = $("#id").val();
+		var banktype_id = $("#banktype_id").combobox('getValue');
+		var card = $("#card").val();
+		var province = $("#province").val();
+		var city = $("#city").val();
+		var address = $("#address").val();
+		if(id<1){
+			message('参数错误','warning');
+			return false;
+		}
+		if(banktype_id<1){
+			message('请选择开户银行','warning');
+			return false;
+		}
+		if(isEmptyVal(card)){
+			message('请输入银行帐号','warning');
+			return false;
+		}
+		if(isEmptyVal(province)){
+			message('请输入开户省份','warning');
+			return false;
+		}
+		if(isEmptyVal(city)){
+			message('请输入开户城市','warning');
+			return false;
+		}
+		if(isEmptyVal(address)){
+			message('请输入银行网点','warning');
+			return false;
+		}
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/user-bank.html',   
+	        data: {action:'save',id:id,banktype_id:banktype_id,card:card,province:province,city:city,address:address},
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },   
+	        success: function(data){
+				if(data.result==true){	
+					message('保存成功','info');
+					$('#dlg').dialog('close');
+					$('#dg').datagrid('reload');
+				}else {
+					message(data.msg,'error');
+			    }               
+	        }   
+		});
+	});
+	$("#btn_edit").click(function(){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/user-bank.html',   
+	        data: {action:'one',id:id},
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },   
+	        success: function(data){
+				if(data.result==true){
+					var data = data.data;
+					$("#id").val(data.id);
+					$("#username").val(data.username);
+					$('#banktype').combobox('setValue',data.banktype_id);
+					$("#card").val(data.card);
+					$("#province").val(data.province);
+					$("#city").val(data.city);
+					$("#address").val(data.address);
+					$('#dlg').dialog('open');
+				}else {
+				    message('获取数据失败','warning');
+			    }               
+	        }   
+		});
+	});
+	$("#btn_remove").click(function(){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		$.messager.confirm('删除确认', '是否确认删除', function(r){
+			if (r){
+				$.ajax({   
+			        type: 'POST', 
+			        url: '/ajax/user-bank.html',   
+			        data: {action:'del',id:id},
+			        dataType:'json',
+			        beforeSend:function(){
+			        	wait_open();
+			        },		    
+			        complete: function() {   
+			        	wait_close();
+			        },  
+			        success: function(data){
+			        	if(data.result==true){
+			        		deleteRow();
+			        		message('删除成功','info');
+			        		$('#dg').datagrid('reload');
+						}else {
+						    message(data.msg,'warning');
+					    }               
+			        }   
+				});
+			}
+			return false;
+		});
+	});
+	function loadbanktype(){
+		$('#banktype_id').combobox('reload', '/ajax/user-bank.html?action=type');
+	}
+	loadbanktype();
+})
+</script>
+</body>
+</html>

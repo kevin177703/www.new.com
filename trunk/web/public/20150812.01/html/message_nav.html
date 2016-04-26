@@ -1,0 +1,16 @@
+<div class="gonggao">
+	<div class="w990">
+	   <!--公告开始-->
+	     <div class="ggnews">
+            <h4>最新公告: </h4>
+            <div style="font-size: 14px;color: #8580ad;width: 310px;height: 42px;float:left;">
+                  <marquee id="pbnotice" scrollamount="3.5" scrolldelay="0" direction="left" onmouseover="this.stop();" onmouseout="this.start();">
+                  {{foreach from=$message_nav key=k item=data}}
+                  {{$data.content}}&nbsp;&nbsp;&nbsp;&nbsp;
+                  {{/foreach}}
+                  </marquee>
+            </div>
+	     </div>
+	   <!--公告结束-->
+	</div>
+</div>

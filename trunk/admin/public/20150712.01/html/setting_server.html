@@ -1,0 +1,89 @@
+{{$header}}
+<body>
+	<div style="margin:20px 0 10px 0;"></div>
+	<div class="easyui-accordion" data-options="multiple:true" style="width:500px;">
+		<div title="logo路径" style="overflow:auto;padding:10px;">
+	    	<table>
+	    		<tr>
+	    			<td width="60px">路径:</td>
+	    			<td><input id="server_logo_url" class="easyui-validatebox textbox" style="width:300px" data-options="required:true,novalidate:true">(以/结尾)</td>
+	    		</tr>
+	    	</table>
+		</div>
+		<div title="第三方文件路径" style="padding:10px;">
+	    	<table>
+	    		<tr>
+	    			<td width="60px">路径:</td>
+	    			<td><input id="server_third_url" class="easyui-validatebox textbox" style="width:300px" data-options="required:true,novalidate:true">(以/结尾)</td>
+	    		</tr>
+	    	</table>
+		</div>
+		<div title="" data-options="collapsed:false,collapsible:false" style="padding:10px;text-align:center;">
+			<a href="javascript:void(0)" class="easyui-linkbutton" style="width:100px;height:32px" id="btn_save">保存</a>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+$(function(){
+	$('.validatebox-text').bind('blur', function(){
+		$(this).validatebox('enableValidation').validatebox('validate');
+	});
+	function load(){
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/setting-server.html',   
+	        data: {
+	        	action:'one',
+	        	def:1
+	        },
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },   
+	        success: function(data){
+				if(data.result==true){	
+					if(data.msg>0){
+						var data = data.data;
+						for(var i=0;i<data.length;i++){
+							$("#"+data[i].key).val(data[i].value);
+						}
+					}
+				}else {
+					message('获取失败','error');
+			    }               
+	        }   
+		});
+	}
+	$("#btn_save").click(function(){
+		var data={action:'save',def:1};
+		$("input").each(function(){
+			data[$(this).attr('id')]=$(this).val();
+		});
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/setting-server.html',   
+	        data: data,
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },   
+	        success: function(data){
+				if(data.result==true){	
+					message('保存成功','info');
+					load();
+				}else {
+					message('保存失败','error');
+			    }               
+	        }   
+		});
+	});
+	load();
+});
+</script>
+</html>

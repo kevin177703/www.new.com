@@ -1,0 +1,100 @@
+{{$header}}
+<body>
+	<div style="margin:20px 0 10px 0;"></div>
+	<div class="easyui-accordion" data-options="multiple:true" style="width:550px;">
+		<div title="首存优惠" style="padding:10px;">
+	    	<table>
+	    		<tr>
+	    			<td width="80px">最高优惠:</td>
+	    			<td><input id="sale_first_money" class="easyui-validatebox textbox" style="width:60px" data-options="required:true,novalidate:true">元(无限制为0)</td>
+	    		</tr>
+	    		<tr>
+	    			<td>优惠比:</td>
+	    			<td><input id="sale_first" class="easyui-validatebox textbox" style="width:60px" data-options="required:true,novalidate:true">%</td>
+	    		</tr>
+	    		<tr>
+	    			<td>流水倍数:</td>
+	    			<td><input id="sale_times" class="easyui-validatebox textbox" style="width:60px" data-options="required:true,novalidate:true">倍</td>
+	    		</tr>
+	    	</table>
+		</div>
+		<div title="转账手续费" style="padding:10px;">
+	    	<table>
+	    		<tr>
+	    			<td width="80px">最高手续费:</td>
+	    			<td><input id="sale_transfer_money" class="easyui-validatebox textbox" style="width:60px" data-options="required:true,novalidate:true">元(无限制为0)</td>
+	    		</tr>
+	    		<tr>
+	    			<td>手续费比例:</td>
+	    			<td><input id="sale_transfer" class="easyui-validatebox textbox" style="width:60px" data-options="required:true,novalidate:true">%</td>
+	    		</tr>
+	    	</table>
+		</div>
+		<div title="" data-options="collapsed:false,collapsible:false" style="padding:10px;text-align:center;">
+			<a href="javascript:void(0)" class="easyui-linkbutton" style="width:100px;height:32px" id="btn_save">保存</a>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+$(function(){
+	$('.validatebox-text').bind('blur', function(){
+		$(this).validatebox('enableValidation').validatebox('validate');
+	});
+	function load(){
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/setting-sale.html',   
+	        data: {
+	        	action:'one',
+	        },
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },   
+	        success: function(data){
+				if(data.result==true){	
+					if(data.msg>0){
+						var data = data.data;
+						for(var i=0;i<data.length;i++){
+							$("#"+data[i].key).val(data[i].value);
+						}
+					}
+				}else {
+					message('获取失败','error');
+			    }               
+	        }   
+		});
+	}
+	$("#btn_save").click(function(){
+		var data={action:'save'};
+		$("input").each(function(){
+			data[$(this).attr('id')]=$(this).val();
+		});
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/setting-sale.html',   
+	        data: data,
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },   
+	        success: function(data){
+				if(data.result==true){	
+					message('保存成功','info');
+					load();
+				}else {
+					message('保存失败','error');
+			    }               
+	        }   
+		});
+	});
+	load();
+});
+</script>
+</html>

@@ -1,0 +1,86 @@
+{{$header}}
+<script type="text/javascript" src="{{$third}}my97/WdatePicker.js"></script>
+<div class="banner" style="background:url({{$images}}pages/banner/8.png) center top;"></div>
+<div class="pagesmain">
+{{include file="message_center.html"}}
+	<div class="w990">
+		<div class="m">
+		{{include file="member_left.html"}}
+			<div class="mright">
+            <div class="position"><span>当前位置：</span><a href="javascript:;">基本资料&nbsp;/&nbsp;个人信息</a></div>
+	            <div class="mjibencontenta">
+	            	<div class="guangbo">个人信息填写后将不可自行修改，更多问题请联系在线客服!</div>
+		            <table width="640" border="0" cellspacing="0" cellpadding="0">
+					  <tbody><tr>
+					    <td width="30"><font color="d92022">*</font></td>
+					    <td width="60">用户:</td>
+					    <td align="left" width="360"><span>{{$username}}</span></td>
+					    <td>&nbsp;</td>
+					  </tr>
+					  <tr>
+					    <td><font color="d92022">*</font></td>
+					    <td>姓名:</td>
+					    <td>{{$user.truname}}</td>
+					    <td class="xiao"></td>
+					  </tr>
+					  <tr>
+					    <td><font color="d92022">*</font></td>
+					    <td>手机:</td>
+					    <td>{{$user.phone}}</td>
+					    <td class="xiao"></td>
+					  </tr>
+					  <tr>
+					    <td><font color="d92022">*</font></td>
+					    <td>性别:</td>
+					    <td id="male">
+					    {{if $data.no_empty==1}}
+					    {{$data.sex}}
+					    {{else}}
+					        <input type="radio" id="sex_male" name="sex" value="男" checked="checked">
+					        <label name="sex_male" for="sex_male" class="checked">男</label>
+					  		<input type="radio" id="sex_female" name="sex" value="女" >
+					  		<label name="sex_female" for="sex_female" >女</label>
+					  	{{/if}}
+					  	</td>
+					    <td>&nbsp;</td>
+					  </tr>
+					  <tr>
+					    <td><font color="d92022">*</font></td>
+					    <td>生日:</td>
+					    <td>
+					    {{if $data.no_empty==1}}
+					    {{$data.birth}}
+					    {{else}}
+					    <input type="text" name="birth" id="birth" value="" readonly="readonly" onfocus="WdatePicker({startDate:'',dateFmt:'yyyy-MM-dd',alwaysUseStartDate:true})">
+					    {{/if}}
+					    </td>
+					    <td>&nbsp;</td>
+					  </tr>
+					    <tr>
+					    <td><font color="d92022">*</font></td>
+					    <td>邮箱:</td>
+					    <td>
+					    {{if $data.no_empty==1}}
+					    {{$data.email}}
+					    {{else}}
+					    <input type="text" name="email" id="email" value="" autocomplete="off">
+					    {{/if}}
+					    </td>
+					  </tr>
+					  <tr style="line-height:25px"></tr>
+					</tbody></table>
+					{{if $data.no_empty==0}}
+					<div style="height:25px;"></div>
+					<a href="javascript:basicIndexSubmit();" style="margin-left: 90px;"><img src="{{$images}}member/mjibenbt.png"></a>
+					{{/if}}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">	          
+$(document).ready(function(){
+	switchM(3,"m_4_1");
+});
+</script>
+{{$footer}}

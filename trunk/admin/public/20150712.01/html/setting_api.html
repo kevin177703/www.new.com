@@ -1,0 +1,252 @@
+{{$header}}
+<body>
+	<div style="margin:20px 0 10px 0;"></div>
+	<div class="easyui-accordion" data-options="multiple:true" style="width:500px;">
+	{{if $game_type.HQ==1}}
+		<div title="环球" style="overflow:auto;padding:10px;">
+	    	<table>
+	    		<tr>
+	    			<td width="60px">开关:</td>
+	    			<td><input id="api_hq_status" class="easyui-validatebox textbox" style="width:60px" data-options="required:true,novalidate:true">(1启用，0禁用)</td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理帐号:</td>
+	    			<td><input id="api_hq_agent" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>加密密钥:</td>
+	    			<td><input id="api_hq_key" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理密码:</td>
+	    			<td><input id="api_hq_pass" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理url:</td>
+	    			<td><input id="api_hq_url" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>开启测试:</td>
+	    			<td><input id="api_hq_test" class="easyui-validatebox textbox" style="width:60px" data-options="required:true,novalidate:true">(1启用，0禁用)</td>
+	    		</tr>
+	    	</table>
+		</div>
+		{{/if}}
+		{{if $game_type.PT==1}}
+		<div title="PT小游戏" style="padding:10px;">
+			<table>
+	    		<tr>
+	    			<td width="60px">开关:</td>
+	    			<td><input id="api_pt_status" class="easyui-validatebox textbox" style="width:60px" data-options="required:true,novalidate:true">(1启用，0禁用)</td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理帐号:</td>
+	    			<td><input id="api_pt_agent" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>加密密钥:</td>
+	    			<td><input id="api_pt_key" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理密码:</td>
+	    			<td><input id="api_pt_pass" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理url:</td>
+	    			<td><input id="api_pt_url" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>开启测试:</td>
+	    			<td><input id="api_pt_test" class="easyui-validatebox textbox" style="width:60px" data-options="required:true,novalidate:true">(1启用，0禁用)</td>
+	    		</tr>
+	    	</table>
+		</div>
+		{{/if}}
+		{{if $game_type.AG==1}}
+		<div title="AG" style="padding:10px;">
+			<table>
+	    		<tr>
+	    			<td width="60px">开关:</td>
+	    			<td><input id="api_ag_status" class="easyui-validatebox textbox" style="width:60px" data-options="required:true,novalidate:true">(1启用，0禁用)</td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理帐号:</td>
+	    			<td><input id="api_ag_agent" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>加密密钥:</td>
+	    			<td><input id="api_ag_key" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理密码:</td>
+	    			<td><input id="api_ag_pass" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理url:</td>
+	    			<td><input id="api_ag_url" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>开启测试:</td>
+	    			<td><input id="api_ag_test" class="easyui-validatebox textbox" style="width:60px" data-options="required:true,novalidate:true">(1启用，0禁用)</td>
+	    		</tr>
+	    	</table>
+		</div>
+		{{/if}}
+		{{if $game_type.HG==1}}
+		<div title="HG" style="padding:10px;">
+			<table>
+	    		<tr>
+	    			<td width="60px">开关:</td>
+	    			<td><input id="api_hg_status" class="easyui-validatebox textbox" style="width:60px" data-options="required:true,novalidate:true">(1启用，0禁用)</td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理帐号:</td>
+	    			<td><input id="api_hg_agent" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理key:</td>
+	    			<td><input id="api_hg_key" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理密码:</td>
+	    			<td><input id="api_hg_pass" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理url:</td>
+	    			<td><input id="api_hg_url" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>开启测试:</td>
+	    			<td><input id="api_hg_test" class="easyui-validatebox textbox" style="width:60px" data-options="required:true,novalidate:true">(1启用，0禁用)</td>
+	    		</tr>
+	    	</table>
+		</div>
+		{{/if}}
+		{{if $game_type.SB==1}}
+		<div title="沙巴" style="padding:10px;">
+			<table>
+	    		<tr>
+	    			<td width="60px">开关:</td>
+	    			<td><input id="api_sb_status" class="easyui-validatebox textbox" style="width:60px" data-options="required:true,novalidate:true">(1启用，0禁用)</td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理帐号:</td>
+	    			<td><input id="api_sb_agent" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>加密密钥:</td>
+	    			<td><input id="api_sb_key" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理密码:</td>
+	    			<td><input id="api_sb_pass" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理url:</td>
+	    			<td><input id="api_sb_url" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>开启测试:</td>
+	    			<td><input id="api_sb_test" class="easyui-validatebox textbox" style="width:60px" data-options="required:true,novalidate:true">(1启用，0禁用)</td>
+	    		</tr>
+	    	</table>
+		</div>
+		{{/if}}
+		{{if $game_type.BBIN==1}}
+		<div title="波音" style="padding:10px;">
+			<table>
+	    		<tr>
+	    			<td width="60px">开关:</td>
+	    			<td><input id="api_bbin_status" class="easyui-validatebox textbox" style="width:60px" data-options="required:true,novalidate:true">(1启用，0禁用)</td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理帐号:</td>
+	    			<td><input id="api_bbin_agent" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>加密密钥:</td>
+	    			<td><input id="api_bbin_key" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理密码:</td>
+	    			<td><input id="api_bbin_pass" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>代理url:</td>
+	    			<td><input id="api_bbin_url" class="easyui-validatebox textbox" style="width:350px" data-options="required:true,novalidate:true"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>开启测试:</td>
+	    			<td><input id="api_bbin_test" class="easyui-validatebox textbox" style="width:60px" data-options="required:true,novalidate:true">(1启用，0禁用)</td>
+	    		</tr>
+	    	</table>
+		</div>
+		{{/if}}
+		<div title="" data-options="collapsed:false,collapsible:false" style="padding:10px;text-align:center;">
+			<a href="javascript:void(0)" class="easyui-linkbutton" style="width:100px;height:32px" id="btn_save">保存</a>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+$(function(){
+	$('.validatebox-text').bind('blur', function(){
+		$(this).validatebox('enableValidation').validatebox('validate');
+	});
+	function load(){
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/setting-api.html',   
+	        data: {
+	        	action:'one',
+	        },
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },   
+	        success: function(data){
+				if(data.result==true){	
+					if(data.msg>0){
+						var data = data.data;
+						for(var i=0;i<data.length;i++){
+							$("#"+data[i].key).val(data[i].value);
+						}
+					}
+				}else {
+					message('获取失败','error');
+			    }               
+	        }   
+		});
+	}
+	$("#btn_save").click(function(){
+		var data={action:'save'};
+		$("input").each(function(){
+			data[$(this).attr('id')]=$(this).val();
+		});
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/setting-api.html',   
+	        data: data,
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },   
+	        success: function(data){
+				if(data.result==true){	
+					message('保存成功','info');
+					load();
+				}else {
+					message('保存失败','error');
+			    }               
+	        }   
+		});
+	});
+	load();
+});
+</script>
+</html>

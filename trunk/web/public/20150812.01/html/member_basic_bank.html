@@ -1,0 +1,49 @@
+{{$header}}
+<script type="text/javascript" src="{{$third}}my97/WdatePicker.js"></script>
+<div class="banner" style="background:url({{$images}}pages/banner/8.png) center top;"></div>
+<div class="pagesmain">
+{{include file="message_center.html"}}
+	<div class="w990">
+		<div class="m">
+		{{include file="member_left.html"}}
+			<div class="mright">
+            <div class="position"><span>当前位置：</span><a href="javascript:;">客户报表&nbsp;/&nbsp;提款记录</a></div>
+            <div class="mtikuancontent">
+            <div class="guangbo">您是{{$data.group_name}}，共可绑定<span class="red">{{$data.banknum}}</span>张银行卡，
+            已绑定<span class="red">{{$data.total}}</span>张, 还能绑定<span class="red">{{$data.num}}</span>张。
+      {{if $data.num>0}}<a href="/member-basic-bankedit.html">绑定</a>{{/if}}</div>
+			<table width="680" cellspacing="0" cellpadding="0" class="rstable2">
+			  <thead>
+			  <tr class="first">
+			    <td width="150">银行卡号</td>
+			    <td width="100">所属银行</td>
+			    <td width="80">省份</td>
+			    <td width="80">城市</td>
+			    <td width="100">开户网点</td>
+				<td width="50">操 作</td>
+			  </tr>
+			  </thead>
+			  <tbody>
+			  {{foreach from=$data.user_bank key=k item=user_bank}}
+			  <tr>
+			  	<td>{{$user_bank.card}}</td>
+			    <td>{{$user_bank.bank_name}}</td>
+			    <td>{{$user_bank.province}}</td>
+			    <td>{{$user_bank.city}}</td>
+			    <td>{{$user_bank.address}}</td>
+				<td><a href="/member-basic-bankedit.html?id={{$user_bank.id}}">查看</a></td>
+			  </tr>
+			  {{/foreach}}
+			  </tbody>
+			</table>
+           </div>
+           </div>
+       </div>
+   </div>
+</div>
+<script type="text/javascript">	          
+$(document).ready(function(){
+	switchM(3,"m_4_2");
+});
+</script>
+{{$footer}}

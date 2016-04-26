@@ -1,0 +1,222 @@
+{{$header}}
+<body>
+	<table id="dg" class="easyui-datagrid" title="管理员组管理" style="width:100%;height:auto"
+			data-options="
+				rownumbers:true,singleSelect:true,pagination:true,pageSize:20,
+				queryParams: {'action':'all'},
+				iconCls: 'icon-save',
+				toolbar: '#tb',
+				url: '/ajax/setting-group.html',
+				method: 'post',
+				onClickRow: onClickRow
+			">
+		<thead>
+			<tr>
+				<th data-options="field:'name',width:350">组名称</th>
+			</tr>
+		</thead>
+	</table>
+	
+	<div id="tb" style="padding:2px 0">
+		<table cellpadding="0" cellspacing="0" style="width:100%">
+			<tr>
+				<td style="padding-left:2px">
+				{{if $is_add=='Y'}}
+					<a href="javascript:void(0);" id="btn_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
+				{{/if}}
+				{{if $is_edit=='Y'}}
+					<a href="javascript:void(0);" id="btn_edit" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">编辑</a>
+				{{/if}}
+				{{if $is_del=='Y'}}
+					<a href="javascript:void(0);" id="btn_remove" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
+				{{/if}}
+				</td>
+				<td style="text-align:right;padding-right:2px">
+					<input id="search" class="easyui-searchbox" data-options="prompt:'输入菜单名称'" style="width:250px"></input>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="dlg" class="easyui-dialog" title="设置管理员组" style="width:870px;height:auto;padding:10px;"
+			data-options="
+				top:'10px',
+				iconCls:'icon-edit',
+				buttons:'#dlg-buttons' 
+			">
+	</div>
+	<div id="dlg-buttons">
+		<input type="hidden" id="id" value="0" />
+		<a href="javascript:void(0)" class="easyui-linkbutton" id="btn_save">保存</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+	</div>
+<script type="text/javascript">
+$(function(){
+	$('#dlg').dialog('close');
+	$('.validatebox-text').bind('blur', function(){
+		$(this).validatebox('enableValidation').validatebox('validate');
+	});
+	var sel_agent_id = 0;
+	$("#search").searchbox({
+	    searcher: function (val, name) {
+	        $('#dg').datagrid('options').queryParams.search = val;
+	        $('#dg').datagrid('reload');
+	    },
+	    prompt: '输入管理组名称'
+	});
+	$("#sel_agent").combobox({
+	    onChange:function(newValue,oldValue){
+	        if(newValue==oldValue)return false;
+	        sel_agent_id = newValue;
+	        $('#dg').datagrid('options').queryParams.sel_agent_id = sel_agent_id;
+	        $('#dg').datagrid('reload');
+	    }
+	});
+	$('#sel_agent').combobox('setValue',0);
+	$("#btn_save").click(function(){
+		var name = $("#name").val();
+		var id = $("#id").val();
+		var list = '';
+		var one = '';
+		var add = '';
+		var edit = '';
+		var del = '';
+		var undo = 'N';
+		var exam = 'N';
+		var conf = 'N';
+	    $('input[name="menus_list"]:checked').each(function(){ 
+	    	list+=$(this).val()+','; 
+	    }); 
+	    $('input[name="menus_one"]:checked').each(function(){ 
+	    	one+=$(this).val()+','; 
+	    });
+	    $('input[name="menus_add"]:checked').each(function(){ 
+	    	add+=$(this).val()+','; 
+	    });
+	    $('input[name="menus_edit"]:checked').each(function(){ 
+	    	edit+=$(this).val()+','; 
+	    });
+	    $('input[name="menus_del"]:checked').each(function(){ 
+	    	del+=$(this).val()+','; 
+	    });
+	    $('input[name="menus_undo"]:checked').each(function(){ 
+	    	undo='Y';
+	    });
+	    $('input[name="menus_exam"]:checked').each(function(){ 
+	    	exam='Y';
+	    });
+	    $('input[name="menus_conf"]:checked').each(function(){ 
+	    	conf='Y';
+	    });
+		if(isEmptyVal(name)){
+			message('请输入菜单名称','warning');
+			return false;
+		}
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/setting-group.html',   
+	        data: {action:'save',id:id,name:name,menus_list:list,menus_one:one,menus_add:add,menus_edit:edit,menus_del:del,menus_undo:undo,menus_exam:exam,menus_conf:conf},
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },     
+	        success: function(data){
+				if(data.result==true){	
+					message('保存成功','info');
+					$('#dlg').dialog('close');
+					$('#dg').datagrid('reload');
+				}else {
+					message(data.msg,'error');
+			    }               
+	        }   
+		});
+	});
+	$("#btn_add").click(function(){
+		$("#id").val("0");
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/setting-group.html',   
+	        data: {action:'html'},
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },  
+	        success: function(data){
+	        	if(data.result==true){
+	        		$('#dlg').html(data.data);
+					$('#dlg').dialog('open');
+				}else {
+				    message('获取数据失败','warning');
+			    }               
+	        }   
+		});
+	});
+	$("#btn_edit").click(function(){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		var name = row.name;
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/setting-group.html',   
+	        data: {action:'html',id:id},
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },  
+	        success: function(data){
+	        	if(data.result==true){
+	        		$('#id').val(id);
+	        		$('#dlg').html(data.data);
+	        		$('#name').val(name);
+					$('#dlg').dialog('open');
+				}else {
+				    message('获取数据失败','warning');
+			    }             
+	        }   
+		});
+	});
+	$("#btn_remove").click(function(){
+		if (editIndex == undefined)return false;
+		var row = $("#dg").datagrid("getSelected");
+		var id = row.id;
+		var name = row.name;
+		$.messager.confirm('删除确认', '是否确认删除'+name+'?', function(r){
+			if (r){
+				$.ajax({   
+			        type: 'POST', 
+			        url: '/ajax/setting-group.html',   
+			        data: {action:'del',id:id,name:name},
+			        dataType:'json',
+			        beforeSend:function(){
+			        	wait_open();
+			        },		    
+			        complete: function() {   
+			        	wait_close();
+			        },   
+			        success: function(data){
+			        	if(data.result==true){
+			        		message('删除成功','info');
+			        		deleteRow();
+			        		$('#dg').datagrid('reload');
+						}else {
+						    message(data.msg,'warning');
+					    }               
+			        }   
+				});
+			}
+			return false;
+		});
+	});
+})
+</script>
+</body>
+</html>

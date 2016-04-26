@@ -1,0 +1,136 @@
+﻿{{$header}}<link href="{{$css}}index.css" rel="stylesheet" type="text/css" /><script type="text/javascript" src="{{$js}}wikmain.js"></script><script type="text/javascript" src="{{$js}}wikmenu.js"></script><script type="text/javascript" src="{{$js}}index.js"></script>
+<script type="text/javascript">var _menus = {{$menu}};
+ //设置登录窗口
+function openPwd() {
+     $('#w').window({
+         title: '修改密码',
+         width: 300,
+         modal: true,
+         shadow: true,
+         closed: true,
+         height: 205,
+         resizable: false
+     });
+}
+ //初始化左侧
+function InitLeftMenu() {
+     $(".easyui-accordion1").empty();
+     var menulist = "";
+     $.each(_menus.menus, function(i, n) {
+         menulist += '<div title="' + n.menuname + '"  icon="icon-nav" style="overflow:auto;">';
+         menulist += '<ul>';
+         $.each(n.menus, function(j, o) {
+             menulist += '<li><div><a ref="' + o.menuid + '" href="javascript:;" rel="' + o.url + '" ><span class="icon icon-nav" >'             +'&nbsp;</span><span class="nav">' + o.menuname + '</span></a></div></li> ';
+         });
+         menulist += '</ul></div>';
+     });
+     $(".easyui-accordion1").append(menulist);
+     $('.easyui-accordion1 li a').click(function() {
+         var tabTitle = $(this).children('.nav').text();
+         var url = $(this).attr("rel");
+         var menuid = $(this).attr("ref");
+         var icon = getIcon(menuid, icon);
+         addTab(tabTitle, url, icon);
+         $('.easyui-accordion1 li div').removeClass("selected");
+         $(this).parent().addClass("selected");
+     }).hover(function() {
+         $(this).parent().addClass("hover");
+     }, function() {
+         $(this).parent().removeClass("hover");
+     });
+     $(".easyui-accordion1").accordion();
+}
+function closePwd() {
+     $('#w').window('close');
+     $('#password').val('');
+     $('#new_password').val('');     $('#c_new_password').val('');
+}
+$(function() {
+     openPwd();
+     InitLeftMenu();
+     $('#editpass').click(function() {
+         $('#w').window({
+             title: '修改登录密码'
+         });
+         $('#w').window('open');
+     });     $("#btnSave").click(function() {		 var password = $("#password").val();		 var new_password = $("#new_password").val();		 var c_new_password = $("#c_new_password").val();		 if(isEmptyVal(password)){			message('请输入原密码','warning');			return false;		 }		 if(new_password.length<6){			message('请输入6位或6位以上字符作为密码','warning');			return false;		 }		 if(new_password != c_new_password){			 message('两次新密码不一致','warning');			 return false;		 }		 		 if(password == new_password){			 message('新密码和原始密码不能一样','warning');			 return false;		 }		 		 		 		 $.ajax({   	        type: 'POST', 	        url: '/ajax/pass.html',   	        data: {password:password,new_password:new_password,c_new_password:c_new_password},	        dataType:'json',	        beforeSend:function(){   	        	wait_open();	        },		    	        complete: function() {   	        	wait_close();	        } ,	        success: function(data){				if(data.result==true){						message('修改成功','info');					closePwd();				}else {					message(data.msg,'error');			    }               	        }   		});     });
+     $('#btnCancel').click(function() { closePwd(); });
+     $('#loginOut').click(function() {
+         $.messager.confirm('系统提示', '您确定要退出本次登录吗?', function(r) {
+             if (r) {            	 $.ajax({            	        type: 'POST',          	        url: '/ajax/logout.html',            	        data: {},         	        dataType:'json',         	        success: function(data){         	        	location.href = '/';                  	        }           		});
+             }
+         });
+     });
+});
+</script>
+<body class="easyui-layout" style="overflow-y: hidden" scroll="no">
+    <input type="hidden" id="ipt_UserName" name="ipt_UserName" value="kxcces" />
+    <noscript>
+        <div style="position: absolute; z-index: 100000; height: 2046px; top: 0; left: 0;
+            width: 100%; background: white; text-align: center;">
+            <img src="{{$images}}noscript.gif" alt='抱歉，请开启脚本支持！' />
+        </div>
+    </noscript>
+    <div region="north" split="true" border="false" style="overflow: hidden; height: 30px;
+        background: url({{$images}}layout-browser-hd-bg.gif) #7f99be repeat-x center 50%;
+        line-height: 20px; color: #fff; font-family: Verdana, 微软雅黑,黑体">
+        <span style="float: right; padding-right: 20px;" class="head">        {{if $is_admin==1}}        <select class="easyui-combobox" panelHeight="auto" style="width:150px" id="sel_agent">			<option value="0">请选择代理</option>			{{foreach from=$agent_list item=data}}			<option value="{{$data.id}}" {{if $sel_agent_id==$data.id}}{{/if}}>{{$data.username}}</option>			{{/foreach}}		</select>  		<script>		$(function(){			var op_agent_id = '{{$op_agent_id}}';			$("#sel_agent").combobox({			    onChange:function(newValue,oldValue){			        if(newValue==op_agent_id)return false;			        if(newValue>0){			        	window.location.href = "/?op_agent_id="+newValue;			        }else{			        	window.location.href = "/";			        }			        			    }			});			$('#sel_agent').combobox('setValue',op_agent_id);		});		</script>		{{/if}}		 欢迎您：{{$group.name}}<span style="color: red;">[{{$username}}]</span>
+	        <a href="javascript:void(0);" style="cursor: pointer; text-decoration: none;" id="editpass">[修改登录密码]</a>
+	        <a href="javascript:void(0);" id="loginOut" style="cursor: pointer; text-decoration: none;">[安全退出]</a>	        <span id="showtime"></span>        </span>          <span style="padding-left: 10px; font-size: 16px;">
+             <img src="{{$images}}blocks.gif" style="width: 20px; height: 20px;" align="absmiddle" />{{$web_title}} 后台管理系统         </span>
+    </div>
+    <div region="south" split="true" style="height: 30px; background: #D2E0F2;">
+        <div class="footer">
+            &nbsp;&nbsp;&nbsp; {{$web_title}} & 后台管理  & {{$date}}</div>
+    </div>
+    <div region="west" split="true" title="导航菜单" style="width: 180px;" id="west">
+        <div class="easyui-accordion1" fit="true" border="false">
+            <!--  导航内容 -->
+        </div>
+    </div>
+    <div id="mainPanle" region="center" style="background: #eee; overflow-y: hidden">
+        <div id="tabs" class="easyui-tabs" fit="true" border="false">
+            <div title="欢迎使用" style="padding: 20px; overflow: hidden;" id="home">
+                <span style="font-family: '微软雅黑'; font-size: 28px; color: #1542A4;">欢迎使用{{$web_title}}后台管理系统</span>
+            </div>
+        </div>
+    </div>
+    <!--修改密码窗口-->
+    <div id="w" class="easyui-window" collapsible="false" minimizable="false" maximizable="false"
+        icon="icon-save" style="width: 300px; height: 205px; padding: 5px; background: #fafafa;">
+        <div class="easyui-layout" fit="true">
+            <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
+                <table cellpadding="3" style="margin-left:20px;">
+                    <tr>
+                        <td style="text-align:right;">原始密码：</td>
+                        <td><input id="password" type="Password" class="txt01" maxlength="12"/></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;">新密码：</td>
+                        <td><input id="new_password" type="Password" class="txt01" maxlength="12"/></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;">确认密码：</td>
+                        <td><input id="c_new_password" type="Password" class="txt01" maxlength="12"/></td>
+                    </tr>
+                </table>
+            </div>
+            <div region="south" border="false" style="text-align: right; height: 30px; line-height: 30px;">
+                <a id="btnSave" class="easyui-linkbutton" icon="icon-ok" href="javascript:void(0);">确定</a>
+                <a id="btnCancel" class="easyui-linkbutton" icon="icon-cancel" href="javascript:void(0);">
+                    取消</a>
+            </div>
+        </div>
+    </div>
+    <div id="mm" class="easyui-menu" style="width: 150px;">
+        <div id="mm-tabclose">关闭</div>
+        <div id="mm-tabcloseall">全部关闭</div>
+        <div id="mm-tabcloseother">除此之外全部关闭</div>
+        <div class="menu-sep"></div>
+        <div id="mm-tabcloseright">当前页右侧全部关闭</div>
+        <div id="mm-tabcloseleft">当前页左侧全部关闭</div>
+        <div class="menu-sep"></div>
+        <div id="mm-exit">退出</div>
+    </div>
+</body><script>ShowTime({{$now}});</script>
+</html>

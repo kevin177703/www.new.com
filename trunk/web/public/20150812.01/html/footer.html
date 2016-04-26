@@ -1,0 +1,190 @@
+<div class="clear"></div>
+<div class="footer"></div>
+<!--底部文字开始-->
+<div id="footerCons" class="divWidth">
+	<div class="footerCon">
+		<div class="footerConIco"></div>
+		<div class="footerConTxt">
+			<div class="footerConTxtTitle">注册开户</div>
+			<div class="footerConTxtCon">成功注册{{$web_title}}账户即可享受所有线上投注的优惠及高品质、高赔率的娱乐游戏。我们致力于提供全球客户各类存款红利及优惠。</div>
+			<div class="footerConTxtTitle">合作伙伴</div>
+			<div class="footerConTxtCon">{{$web_title}}通过优异的合作伙伴计划，为客户提供一个完善的创收平台，通过开发新户客户，您将可以获取丰厚的佣金。</div>
+			<div class="footerConTxtTitle">责任条款</div>
+			<div class="footerConTxtCon">{{$web_title}}为您提供优质的娱乐平台，并设置多项安全设施，以确保游戏的公平。如客户遇上任何负责任条款的问题，请随时与我们联系。</div>
+			<div class="footerConTxtTitle">安全隐私</div>
+			<div class="footerConTxtCon">我们采用坚实、稳定与安全的娱乐系统，来维护您的隐私权，您提供的信息仅用于我们向您提供更好的服务，因此，我们制定了在线个人信息保密制度以保护您的个人信息。</div>
+		</div>
+	</div>
+	<div class="footerCon">
+		<div class="footerConIco" style="background-position:-30px 0px;"></div>
+		<div class="footerConTxt">
+			<div class="footerConTxtTitle">平台认证</div>
+			<div class="footerConTxtCon">{{$web_title}}各个游戏平台已获得菲律宾First Cagayan授权，并获得国际委员会Gambling Commission、GEOTRUST国际、AGCC、IOM以及TST（Technical Systems Testing Inc）的认证。 </div>
+			<div class="footerConTxtTitle">线上娱乐场</div>
+			<div class="footerConTxtCon">您可选择的游戏包括轮盘、21点、电子扑克、老虎机、累积游戏等在线娱乐场游戏。此外您更有机会赢得{{$web_title}}的各类累积奖金。</div>
+			<div class="footerConTxtTitle">真人娱乐城</div>
+			<div class="footerConTxtCon">在{{$web_title}}的真人娱乐城，您可饱览整个赌场大厅和靓丽的美女荷官。玩法众多如真人百家乐，真人龙虎以及真人轮盘。您也可以选择容易上手的线上老虎机或KENO快乐彩消遣时光。</div>
+		</div>
+	</div>
+	<div class="footerCon">
+		<div class="footerConIco" style="background-position:-60px 0px;"></div>
+		<div class="footerConTxt">
+			<div class="footerConTxtTitle">帮助信息</div>
+			<div class="footerConTxtCon">{{$web_title}}为客户提供众多的存取款方式，如在线充值、网银充值、ATM转账充值、柜台转账等方式。同时我们还将奉上开户奖金等多重优惠活动等您来赢取。 </div>
+			<div class="footerConTxtTitle">联络我们</div>
+			<div class="footerConTxtCon">如果您有任何关于游戏投注及娱乐场的疑问，可通过在线客服、电话及电邮方式与我们取得联系。{{$web_title}}提供24/7小时客户服务。免费热线：40068-12582</div>
+			<div class="footerConTxtTitle">游戏服务</div>
+			<div class="footerConTxtCon">我们的真人娱乐城提供限额查询、即时彩池、结果查询及回放历史视频。您所须的所有信息将显示在荧幕上，以便您进行投注。您亦可选择显示或隐藏个别的信息。</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+<!--底部文字结束-->
+<!--浮动登陆开始-->
+<div class="botton_clear"></div>
+{{if $uid>0}}
+<div class="bottomlogin" id="bt_xx3659_1">
+	<a href="javascript(0);" class="bottom_close" title="关闭"><img src="{{$images}}index/close.png"></a>
+	<div class="w990" id="cklogin">
+		<div class="login">
+		<img style="padding-left:10px; padding-right:5px; vertical-align:middle;" src="{{$images}}use.png">用户名：{{$username}}
+		<img style="padding-left:10px; padding-right:5px; vertical-align:middle;" src="{{$images}}money.png">用户余额：<span id="j_money">读取中..</span>
+		<a href="javascript:getmoney()"><img style="padding-left:10px; padding-right:5px; vertical-align:middle;" src="{{$images}}ref.png"></a>
+		<a href="/member_pay"><img style="padding-left:10px; vertical-align:middle;" src="{{$images}}depsit.png"></a>
+		<a href="javascript:;" id="logout"><img style="padding-left:10px; padding-right:5px; vertical-align:middle;" src="{{$images}}exit.png"></a>
+		</div>
+		<div class="bright">
+		<a href="/member-index.html"><img src="{{$images}}member.png"></a> <a href="/game.html" target="_blank"><img src="{{$images}}jinru.png"></a>
+		</div>
+	</div>
+</div>
+{{else}}
+<div class="bottom" id="bt_xx3659_1">
+	<a href="javascript(0);" class="bottom_close" title="关闭"><img src="{{$images}}index/close.png"></a>
+	<div class="w990" id="cklogin">
+		<div class="login">
+			<input type="text" id="login_username" style="width:155px; padding-left:10px; border-style:none;" value=""/>
+			<input type="password" id="login_password" style="width:155px; margin-left:20px;border-style:none;" value="" />
+			<input type="text" id="login_code" maxlength="4"  style="width:50px; margin-left:20px;border-style:none;" value=""/>
+			<img src="" id="login_img_code" style="width: 55px;height: 25px;margin-left:10px; float:left;cursor:pointer;">
+			<input id="submit_login" type="submit"  style="background:url({{$images}}loginbt.png) no-repeat; width:64px; height:25px; margin-left:10px;cursor:pointer;" value=""/>
+		</div>
+		<div class="bright"><a href="/reg.html"><img src="{{$images}}kaihu.png"></a> <a href="javascript:showTry();"><img src="{{$images}}shiwan.png"></a></div>
+	</div>
+</div>
+{{/if}}
+
+<!--浮动登陆结束-->
+<!--浮动客服开始-->
+<div class="duilian duilian_left">
+	<a href="javascript(0);" class="duilian_close" title="关闭"><img src="{{$images}}index/close.png"></a>
+	<div class="duilian_con"><img src="{{$images}}index/byleft.png"></div>
+</div>
+<div class="duilian duilian_right">	
+	<a href="javascript(0);" class="duilian_close" title="关闭"><img src="{{$images}}index/close.png"></a>	
+	<div class="duilian_con" style="background:url({{$images}}index/kfright.png) 0 0 no-repeat;">	
+		<a href="javascript:OnlineChat();" style="display: block; width: 100%; height: 150px;" title="800在线客服"></a>	
+		<a href="http://wpa.qq.com/msgrd?v=3&uin=1258066611&site=qq&menu=yes" style="display: block; width: 100%; height: 36px; margin-top: 8px;" title="qq在线客服" target="_blank"></a>	
+		<a href="http://wpa.qq.com/msgrd?v=3&uin=1258066622&site=qq&menu=yes" style="display: block; width: 100%; height: 36px; margin-top: 8px;" title="qq在线客服" target="_blank"></a>
+	</div>
+</div>
+<script>
+$(function(){
+	var B=$("div.duilian");
+	var A=$("a.duilian_close");
+	var C=screen.width;
+	if(C>1024){
+		B.show();
+	}
+	$(window).scroll(function(){
+		var D=$(window).scrollTop();
+		B.stop().animate({top:D+120});
+	});
+	A.click(function(){
+		$(this).parent().hide();
+		return false;
+	});
+	
+	$("#smt_login").click(function(){
+		
+	});
+	$("#logout").click(function(){
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/user-logout.html',   
+	        data: {},
+	        dataType:'json',
+	        beforeSend:function(){   
+	        	showloading();   
+	        },		    
+	        complete: function() {   
+	        	$.unblockUI();
+	        },     
+	        success: function(data){
+				if(data.result==true){	
+					msg_box_show("退出成功",3,"/",'succeed');
+				}             
+	        }   
+		});
+	});
+	$("#submit_login").click(function(){
+		var username = $("#login_username").val();
+		var password = $("#login_password").val();
+		var code = $("#login_code").val();
+		if(isEmptyVal(username)){
+			msg_box_show("请输入帐号",3,'','error');
+			return false;
+		}
+		if(isEmptyVal(password)){
+			msg_box_show("请输入密码",3,'','error');
+			return false;
+		}
+		if(isEmptyVal(code)){
+			msg_box_show("请输入验证码",3,'','error');
+			return false;
+		}
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/user-login.html',   
+	        data: {username:username,password:password,code:code},
+	        dataType:'json',
+	        beforeSend:function(){   
+	        	showloading();   
+	        },		    
+	        complete: function() {   
+	        	$.unblockUI();
+	        },     
+	        success: function(data){
+				if(data.result==true){	
+					msg_box_show("登录成功",3,"/member-index.html",'succeed');
+				}else{
+					msg_box_show(data.msg,3,'','error');
+				}          
+	        }   
+		});
+	});
+	$("#login_img_code").click(function(){
+		refreshcode();
+	});
+	//在线客服
+	function onlineChat(){
+		
+	}
+	//获取验证码
+	function refreshcode(){
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/code.html?action=login&x=60&y=25',   
+	        data: {},
+	        dataType:'text',    
+	        success: function(data){
+	        	$("#login_img_code").attr("src",data); 
+	        }   
+		});
+	}
+	refreshcode();
+});
+</script>
+<!--浮动客服结束-->
+</body>
+</html>

@@ -1,0 +1,63 @@
+<div class="mleft">
+      <h2>个人中心</h2>
+      <div class="mcenter">
+       	<div class="mcenternei">
+               	<img src="{{$images}}member/touxiang.png" class="touxiang"> <div class="touxiangyou"><div class="mid">{{$username}}</div><div class="exit"><a href="javascript:;" id="logout">退出登陆</a></div></div>
+                   <div class="clear" style="height:10px"></div>
+                   <a href="dpay"><img src="{{$images}}member/chongzhibt.png" style=" margin-left:8px;"></a><a href="/game.html" target="_blank"><img src="{{$images}}member/gamebt.png" style=" margin-left:15px;"></a>
+                   <div class="clear" style="height:15px"></div>
+                   <div class="yue">
+                   	<div class="yueleft">
+                       	<li>账户余额</li>
+                       </div>
+                       <div class="yueright">
+                       	<li id="money">获取中</li>
+                       </div>
+                   </div>
+               </div>
+	</div>      
+     <div class="clear"></div>
+     <!--个人中心结束-->
+     <div class="mlist">
+     	<div class="vtitle"><em class="v v02"></em>财务中心</div>
+             <div class="vcon" style="display: none;">
+             <ul class="vconlist clearfix">
+                 	<li class="li1" id="m_1_1"><a href="/member-money-pay.html">在线存款</a></li>
+                    <li class="li2" id="m_1_2"><a href="/member-money-bank.html">银行转账</a></li>
+                    <li class="li1" id="m_1_3"><a href="/member-money-draw.html">在线取款</a></li>
+             </ul>
+         	</div>
+             <div class="vtitle"><em class="v"></em>客户报表</div>
+                 <div class="vcon" style="display: none;">
+                 <ul class="vconlist clearfix">
+                     <li class="li1" id="m_2_1"><a href="TiKuanJiLu.html">提款记录</a></li>
+                     <li class="li2" id="m_2_2"><a href="CunKuanJiLu.html">存款记录</a></li>
+                 </ul>
+             </div>
+             <div class="vtitle"><em class="v"></em>推广中心</div>
+                 <div class="vcon" style="display: none;">
+                 <ul class="vconlist clearfix">
+                     <li class="li1" id="m_3_1"><a href="/member-extend-url.html">推广链接</a></li>
+                 </ul>
+             </div>
+             <div class="vtitle"><em class="v"></em>基本资料</div>
+                 <div class="vcon" style="display: none;">
+                 <ul class="vconlist clearfix">
+                     <li class="li1" id="m_4_1"><a href="/member-basic-index.html">基本资料</a></li>
+                     <li class="li2" id="m_4_2"><a href="/member-basic-bank.html">银行资料</a></li>
+                     <li class="li1" id="m_4_3"><a href="/member-basic-pass.html">修改密码</a></li>
+                     <li class="li2" id="m_4_4"><a href="/member-basic-paypass.html">支付密码</a></li>
+                 </ul>
+             </div>
+     </div>
+</div>
+<script type="text/javascript" src="{{$js}}member.js"></script>
+<script>
+$(function(){
+	$('.vtitle').click(function(){
+		var _self = $(this);
+		var j = $('.vtitle').index(_self);
+		switchM(j);
+	});
+});
+</script>

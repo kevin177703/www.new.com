@@ -1,0 +1,85 @@
+{{$header}}
+<div class="banner" style="background:url({{$images}}pages/banner/8.png) center top;"></div>
+<div class="pagesmain">
+{{include file="message_center.html"}}
+	<div class="w990">
+		<div class="m">
+		{{include file="member_left.html"}}
+			<div class="mright">
+            <div class="position"><span>当前位置：</span><a href="javascript:;">财务中心&nbsp;/&nbsp;在线取款</a></div>
+                        <div class="mjibencontent">
+                        <div class="guangbo">当天取款限额为RMB 100元-500万(500元以上免费,500元以下每笔收取5%行政费).</div>
+                        
+<table width="640" border="0" cellspacing="0" cellpadding="0">
+      <tbody><tr>
+        <td width="30"><font color="d92022">*</font></td>
+        <td width="100">所属银行:</td>
+        <td align="left" width="360">获取中</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td><font color="d92022">*</font></td>
+        <td>银行卡号:</td>
+        <td>
+                    <script type="text/javascript">
+            var ccid = '获取中';
+             var t_num = ccid.replace(/\s/g,'').replace(/(\d{4})(?=\d)/g,"$1 ");
+             document.write(t_num);
+            </script>
+                 </td>
+        <td class="xiao"></td>
+      </tr>
+      <tr>
+        <td><font color="d92022">*</font></td>
+        <td>持 卡 人：</td>
+        <td>获取中</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td><font color="d92022">*</font></td>
+        <td>钱包余额:</td>
+        <td><span id="yu_money">查询中</span>&nbsp;&nbsp;元 </td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td><font color="d92022">*</font></td>
+        <td>提款金额:</td>
+        <td><input type="text" name="nmoney" id="nmoney" value="" maxlength="8" autocomplete="off" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onafterpaste="this.value=this.value.replace(/[^\d.]/g,'')" style="width:120px;">&nbsp;&nbsp;元</td>
+        <td class="xiao">
+    </td>
+      </tr>
+      <tr>
+        <td><font color="d92022">*</font></td>
+        <td>取款密码:</td>
+        <td><input type="password" name="paypwd" id="paypwd" value=""></td>
+        <td class="xiao">
+    </td>
+      </tr>
+       <tr>
+        <td>&nbsp;</td>
+        <td>备注信息:</td>
+        <td><textarea name="remarks" id="remarks" style="width:400px; height:115px; background:#dfddf6;  border:none;"></textarea></td>
+        <td class="xiao">
+    </td>
+      </tr>
+       <tr style="line-height:25px">
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </tbody>
+</table>
+<div style="height:25px;"></div>
+<a href="javascript:uGetSubmit();"><img src="{{$images}}member/youxibt.png"></a>
+</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	switchM(0,'m_1_3');
+});
+</script> 	
+		</div>
+	</div>
+</div>
+{{$footer}}

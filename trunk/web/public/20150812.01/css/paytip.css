@@ -1,0 +1,83 @@
+.modal {
+width: 572px;
+height:325px;
+background-color: #fff;
+-webkit-background-clip: padding-box;
+-moz-background-clip: padding-box;
+background-clip: padding-box;
+outline: none;
+}
+
+
+.modal-header {
+height: 58px;
+padding-top: 2px;
+margin: 0 30px;
+border-bottom: 1px solid #ddd;
+position: relative;
+}
+
+
+.modal-header h3 {
+width: 400px;
+margin: 0;
+line-height: 58px;
+font-size: 18px;
+color: #333;
+display: inline-block;
+float: left;
+}
+
+.modal-body {
+position: relative;
+max-height: 400px;
+padding: 30px;
+}
+
+.pay-tip {
+height: 200px;
+background: url("../images/member/payment.png") no-repeat 70px 20px;
+}
+
+.pay-tip .fail, .pay-tip .success {
+float: right;
+width: 230px;
+padding: 15px;
+}
+
+.pay-tip .success {
+clear: right;
+}
+.pay-tip .fail, .pay-tip .success {
+float: right;
+width: 230px;
+padding: 15px;
+}
+
+.pay-tip .fail h4, .pay-tip .success h4 {
+margin: 0;
+color: #6d6d6d;
+}
+
+.pay-tip .fail p, .pay-tip .success p {
+padding-top: 10px;
+font-size: 12px;
+}
+
+.pay-tip a {
+color: #ee330a;
+}
+
+a.Jclose {
+background: url(../images/tb_dialog_close.png) no-repeat;
+float: right;
+height: 13px;
+line-height: normal;
+margin-top: 10px;
+text-decoration: none;
+overflow: hidden;
+width: 14px;
+}
+a.Jclose:hover {
+background-position: 0 -15px;
+}

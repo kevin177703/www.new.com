@@ -1,0 +1,109 @@
+{{$header}}
+<body>
+	<div style="margin:20px 0;"></div>
+	<div class="easyui-panel" title="IP黑白名单" style="width:600px">
+		<div style="padding:10px 60px 20px 60px">
+	    	<table cellpadding="5">
+	    	    <tr>
+	    			<td>注:</td>
+	    			<td>多个ip使用<span class="red">逗号分割</span>,必须使用<span class="red">逗号</span>(,)结尾,白名单权限大于黑名单.
+	    			<br/>ip段使用*标识,如:<span class="red">127.0.0.*,192.168.*,</span> </td>
+	    		</tr>
+	    		<tr>
+	    			<td>后台IP白名单:</td>
+	    			<td><input class="easyui-textbox" id="ip_admin_whitelist" data-options="multiline:true" style="height:120px;width:300px"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>前端IP白名单:</td>
+	    			<td><input class="easyui-textbox" id="ip_web_whitelist" data-options="multiline:true" style="height:120px;width:300px"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>前端IP黑名单:</td>
+	    			<td><input class="easyui-textbox" id="ip_web_blacklist" data-options="multiline:true" style="height:120px;width:300px"></input></td>
+	    		</tr>
+	    	</table>
+		    <div style="text-align:center;padding:5px">
+		    	<a href="javascript:void(0)" class="easyui-linkbutton" style="width:100px;height:32px" id="btn_save">提交</a>
+		    </div>
+	    </div>
+	</div>
+<script type="text/javascript">
+$(function(){
+	$('.validatebox-text').bind('blur', function(){
+		$(this).validatebox('enableValidation').validatebox('validate');
+	});
+	var sel_agent_id = 0;
+	$("#sel_agent").combobox({
+	    onChange:function(newValue,oldValue){
+	        if(newValue==oldValue)return false;
+	        sel_agent_id = newValue;
+	        load();
+	    }
+	});
+	$('#sel_agent').combobox('setValue',0);
+	function load(){
+		$("input").each(function(){
+			var id = $(this).attr('id');
+			if(isEmptyVal(id) == false){
+				$("#"+id).textbox('setValue',""); 
+			}
+		});
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/setting-ip.html',   
+	        data: {
+	        	action:'one',
+	        	sel_agent_id:sel_agent_id
+	        },
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },   
+	        success: function(data){
+				if(data.result==true){
+					if(data.msg>0){
+						var data = data.data;
+						for(var i=0;i<data.length;i++){
+							$("#"+data[i].key).textbox('setValue',data[i].value); 
+						}
+					}
+				}else {
+					message('获取失败','error');
+			    }               
+	        }   
+		});
+	}
+	$("#btn_save").click(function(){
+		var data={action:'save'};
+		$("input").each(function(){
+			data[$(this).attr('id')]=$(this).val();
+		});
+		$.ajax({   
+	        type: 'POST', 
+	        url: '/ajax/setting-ip.html',   
+	        data: data,
+	        dataType:'json',
+	        beforeSend:function(){
+	        	wait_open();
+	        },		    
+	        complete: function() {   
+	        	wait_close();
+	        },   
+	        success: function(data){
+				if(data.result==true){	
+					message('保存成功','info');
+					load();
+				}else {
+					message(data.msg,'error');
+			    }               
+	        }   
+		});
+	});
+	load();
+});
+</script>
+</body>
+</html>
